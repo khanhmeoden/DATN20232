@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import './LogIn.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import googlebutton from '../../asset/googlebutton.jpg'
 
 function LoginForm() {
   const [formLogin, setFormLogin] = useState({
     username_or_email: '',
     password: ''
-  });
+});
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,6 +35,8 @@ function LoginForm() {
     try {
       const response = await axios.post('http://localhost:8080/api/login', { usernameOrEmail: username_or_email, password });
       if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
         alert('Đăng nhập thành công !');
         navigate('/home')
       }
@@ -56,10 +59,13 @@ function LoginForm() {
 
           <div className="inputBox">
             <input type={showPassword ? 'text' : 'password'} id="password" name="password" value={formLogin.password} onChange={handleChange} placeholder="Mật khẩu" required />
-            <button type="button" onClick={handleTogglePassword}>{showPassword ? 'Ẩn' : 'Hiện'}</button>
+            <button type="button" id="show" onClick={handleTogglePassword}>{showPassword ? 'Ẩn' : 'Hiện'}</button>
           </div>
           
           {error && <div className="error-message">Bạn đã nhập sai thông tin. Vui lòng thử lại !</div>}
+          <div onClick={() => auth()}>
+            <img src={googlebutton} className='google' alt='Google Sign-in'></img>
+          </div>
 
           <button type="submit">Đăng nhập</button>
         </form>
