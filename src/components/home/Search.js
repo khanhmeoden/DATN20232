@@ -10,12 +10,6 @@ const Search = () => {
         setSearchTerm(event.target.value);
     };
 
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            handleSearch();
-        }
-    };
-
     const handleSearch = () => {
         // Thực hiện tìm kiếm ở đây, sử dụng biến searchTerm
         alert("Đã tìm kiếm: " + searchTerm);
@@ -28,7 +22,7 @@ const Search = () => {
                 <form id="search-form">
                     <label className="search-widget">
                         <input type="text" placeholder="Nhập từ khoá tìm kiếm..." className="search-input" 
-                             value={searchTerm} onChange={handleInputChange} onKeyPress={handleKeyPress}
+                             value={searchTerm} onChange={handleInputChange}
                         required/>
                     </label>
                 </form>

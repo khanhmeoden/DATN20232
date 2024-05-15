@@ -82,6 +82,11 @@ h1 {
     transition: 0.5s;
 }
 
+#gender-option {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
 .inputBoxAddress {
     position: relative;
     width: 300px;

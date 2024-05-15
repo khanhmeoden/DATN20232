@@ -3,21 +3,14 @@
     src: url(../../../asset/Lato-Medium_0.ttf);
 }
 
-.topic1-bar {
-    background: white;
+.purpose2-bar {
+    background: linear-gradient(90deg, green, white);
     padding: 10px 20px;
-    margin-bottom: 30px;
-    border: 5px solid #00c62b;
-    border-radius: 5px;
+    margin-bottom: 50px;
 }
 
-#topic1-item {
-    font-size: 20px;
-    margin-right: 5px;
-}
-
-#topic1-title {
-    color: #00c62b;
+#purpose2-title {
+    color: green;
     font-size: 20px;
     font-weight: bold;
     font-family: "Lato", sans-serif;

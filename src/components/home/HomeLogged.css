@@ -15,18 +15,9 @@ div {
     box-shadow: none;
 }
 
-#title {
-    text-align: center;
-    margin-top: 1em;
-    color: black;
-    font-size: 24px;
-    line-height: 25px;
-    padding: 2px 0 15px 0;
-    font-weight: normal;
-    font-family: inherit;
-}
-
 .left-content {
+    margin-top: 15px;
+    margin-left: 15px;
     float: left;
     width: 75%;
     box-sizing: border-box;

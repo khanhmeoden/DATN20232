@@ -11,9 +11,110 @@
 }
 
 #create-title {
-    color: rgb(93, 92, 92);
+    color: rgb(92, 93, 93);
     font-size: 24px;
     font-weight: bold;
     font-family: "Lato", sans-serif;
     line-height: 50px;
+}
+
+.post {
+    text-align: left;
+}
+
+.post label {
+    color: rgb(92, 93, 93);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+    margin-right: 50px;
+}
+
+.post div {
+    margin-left: 100px;
+    margin-bottom: 30px;
+}
+
+#title {
+    margin-top: 1em;
+    color: blue;
+    font-size: 17px;
+    line-height: 20px;
+    width: 20em;
+    padding: 7px;
+    margin-left: 15px;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+    text-align: left;
+}
+
+#content {
+    color: rgb(255, 0, 102);
+    padding: 7px;
+    font-size: 14px;
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+}
+
+.post-content label {
+    vertical-align: top;
+}
+
+::placeholder {
+    color: orange;
+}
+
+.post-topic select, .post-purpose select {
+    font-weight: bold;
+    height: 25px;
+    padding-left: 5px;
+    color: orange;
+    font-family: "Lato", sans-serif;
+}
+
+.post-topic option .post-purpose option {
+    font-weight: bold; 
+    font-family: "Lato", sans-serif;
+    color: orange;
+}
+
+.post-topic select#topic:valid {
+    color: rgb(129, 211, 6);
+}
+
+.post-purpose select#purpose:valid {
+    color: rgb(0, 202, 221);
+}
+
+#post-file {
+    font-weight: bold;
+}
+
+#post-file::-webkit-file-upload-button {
+    background-color: orange;
+    color: white;
+    font-family: "Lato", sans-serif;   
+    font-size: 16px;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#post-file::-webkit-file-upload-button:hover {
+    background-color: rgb(192, 125, 0);
+} 
+
+.submit-post {
+    width: 25%;
+    padding: 15px;
+    font-size: 26px;
+    border-radius: 25px;
+    border: none;
+    background-color: rgb(0, 220, 55);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 14em;
 }

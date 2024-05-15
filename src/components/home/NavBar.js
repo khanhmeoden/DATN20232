@@ -20,7 +20,6 @@ const NavBar = () => {
                     <li className="link"><a href="/create-post" className="nav">Tạo bài viết</a></li>
                     <li className="link"><a href="/user-info" className="nav">Hồ sơ cá nhân</a></li>
                     <li className="link"><a href="/message" className="nav">Tin nhắn</a></li>
-                    <li className="link"><a href="/contact" className="nav">Liên hệ</a></li>
                     <li className="link"><a href="/" className="nav">Đăng xuất</a></li>
                 </ul>
             </div>

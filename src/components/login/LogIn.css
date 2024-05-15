@@ -42,7 +42,7 @@ h1 {
     font-size: 1em;
 }
 
-button[type="button"]{
+#show[type="button"]{
     margin-top: 5px;
     width: 15%;
     padding: 5px;
@@ -115,4 +115,7 @@ button[type="submit"]:active {
     margin: -10px 0px 15px 0px;
 }
   
-  
+.google {
+    width: 250px; 
+    cursor: pointer;
+}

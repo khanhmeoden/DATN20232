@@ -24,12 +24,11 @@ const Home = () => {
                 <ul className="menu-list">
                     <li className="link"><a href="/" className="nav">Trang chủ</a></li>
                     <li className="link"><a href="/login" className="nav">Đăng nhập/Đăng ký</a></li>
-                    <li className="link"><a href="/contact" className="nav">Liên hệ</a></li>
                 </ul>
             </div>
 
             <div className="left-content">
-                <h1 id="title">Diễn đàn chia sẻ và hỗ trợ tâm lý</h1>
+                <h1 id="page-title">Diễn đàn chia sẻ và hỗ trợ tâm lý</h1>
                 <div className="topic">
                     <Topic />
                 </div>

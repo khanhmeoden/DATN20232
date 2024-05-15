@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
+const jwt = require('jsonwebtoken'); 
 const cors = require('cors');
 const app = express();
 const port = 8080; 
-const jwt = require('jsonwebtoken');
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -44,20 +44,6 @@ app.post('/api/login', (req, res) => {
         } else if (result.length > 0) {
                 console.log('Người dùng đăng nhập thành công :', usernameOrEmail);
                 res.status(200).send('Đăng nhập thành công !');
-
-                const user = result[0];
-                const token = jwt.sign({
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    avatarUrl: user.avatarUrl
-                    },
-                    'GK27qWOJm0EYPEBvPaWhDPLnj0a5o9zaeLD7R0QmY+ku0h3Jief4veqqeldmgeqJs4zdU0oo5FzsEvp6ScbFNtzwcrATChubSkIWmJVcm6JNhjMNXfjf69qK6LOJO9RrnQwp550eu+b+H3nnlFpkXMyVJRcqXitQn+qiCCPLVg/fl1fxyju3Cd/QIZxczadRPWZjE0lNjGawTvjqeUq43OGqs/uXALvkYfPz8rKwiI0tr0G4geTEXFgq1CfxGftsARCx7vDmnMVSSVU1CHEaEpKm7mLtD3ARaah4eaJMcEn2TscazDOsN7suuK0cg9eHkj48v1zae2xZl6MMWedzVQ==', // Thay bằng khóa bí mật
-                    { expiresIn: '3h' }
-                );
-        
-                // Trả về token cho client
-                res.json({ token });
             } else {
                 console.log('Sai tên đăng nhập hoặc mật khẩu');
                 res.status(401).send('Sai tên đăng nhập hoặc mật khẩu');

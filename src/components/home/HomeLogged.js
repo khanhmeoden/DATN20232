@@ -6,6 +6,7 @@ import Purpose from "./Purpose.js";
 import Search from "./Search.js";
 import RecentPost from "./RecentPost.js";
 import RecentActivity from "./RecentActivity.js";
+// import Profile from "./Profile.js";
 
 const HomeLogged = () => {
     return (
@@ -15,7 +16,7 @@ const HomeLogged = () => {
             </div>
 
             <div className="left-content">
-                <h1 id="title">Diễn đàn chia sẻ và hỗ trợ tâm lý</h1>
+                <h1 id="page-title">Diễn đàn chia sẻ và hỗ trợ tâm lý</h1>
                 <div className="topic">
                     <Topic />
                 </div>
@@ -28,6 +29,9 @@ const HomeLogged = () => {
             </div>
 
             <div className="right-content">
+                {/* <div className="user-info">
+                    <Profile />
+                </div> */}
                 <div className="search">
                     <Search />
                 </div>

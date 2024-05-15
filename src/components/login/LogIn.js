@@ -4,11 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import googlebutton from '../../asset/googlebutton.jpg'
 
+function Navigrate(url){
+  window.location.href = url;
+}
+
+async function auth(){
+  const respone = await fetch('http://localhost:8080/api/auth/google/callback',{method:'post'});
+  const data = await respone.json();
+  Navigrate(data.url);
+}
+
 function LoginForm() {
   const [formLogin, setFormLogin] = useState({
     username_or_email: '',
     password: ''
-});
+  });
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,8 +45,6 @@ function LoginForm() {
     try {
       const response = await axios.post('http://localhost:8080/api/login', { usernameOrEmail: username_or_email, password });
       if (response.status === 200) {
-        const { token } = response.data;
-        localStorage.setItem('token', token);
         alert('Đăng nhập thành công !');
         navigate('/home')
       }
