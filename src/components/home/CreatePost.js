@@ -56,7 +56,6 @@ const CreatePost = () => {
         return formattedTime;
     };
 
-
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
@@ -64,42 +63,6 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         alert("Bạn đã đăng bài viết thành công !")
-        try {
-            const currentTime = getCurrentTime();
-            setPostData({
-                ...postData,
-                time: currentTime
-            });
-
-            // If a file is selected, upload it
-            if (selectedFile) {
-                const formData = new FormData();
-                formData.append('file', selectedFile);
-
-                // Send formData to server to upload file
-                const fileResponse = await axios.post('/api/upload', formData);
-                
-                // Determine if uploaded file is image or video and update the respective URL
-                const { fileType, fileURL } = fileResponse.data;
-                if (fileType.startsWith('image')) {
-                    setPostData({
-                        ...postData,
-                        imageURL: fileURL
-                    });
-                } else if (fileType.startsWith('video')) {
-                    setPostData({
-                        ...postData,
-                        videoURL: fileURL
-                    });
-                }
-            }
-            // Send other postData fields along with imageURL and videoURL to server
-            const response = await axios.post('/api/posts', postData);
-            console.log(response.data); 
-        } catch (error) {
-            console.error('Error:', error);
-            // Handle error
-        }
     };
     
     return (
