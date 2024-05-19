@@ -1,13 +1,13 @@
 import React from "react";
-import './Topic12.css';
+import './Topic13.css';
 import NavBar from "../NavBar";
 import Search from "../Search";
 import RecentActivity from "../RecentActivity";
 import TopicContent from "./TopicContent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBurger } from "@fortawesome/free-solid-svg-icons";
+import { faNotesMedical } from "@fortawesome/free-solid-svg-icons";
 
-const Topic12 = () => {
+const Topic13 = () => {
     return (
         <div className="main-content">
             <div className="navbar">
@@ -15,8 +15,8 @@ const Topic12 = () => {
             </div>
 
             <div className="left-content">
-                <div className="topic12-bar">
-                    <h1 id="topic12-title"><FontAwesomeIcon icon={faBurger} id="topic12-item"/>Ăn uống, dinh duỡng</h1>
+                <div className="topic13-bar">
+                    <h1 id="topic13-title"><FontAwesomeIcon icon={faNotesMedical} id="topic13-item"/>Sức khoẻ</h1>
                 </div>
 
                 <div className="topic-posts">
@@ -36,4 +36,4 @@ const Topic12 = () => {
     );
 }
 
-export default Topic12;
+export default Topic13;

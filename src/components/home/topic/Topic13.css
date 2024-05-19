@@ -3,20 +3,20 @@
     src: url(../../../asset/Lato-Medium_0.ttf);
 }
 
-.topic12-bar {
+.topic13-bar {
     background: white;
     padding: 10px 20px;
     margin-bottom: 30px;
-    border: 7px solid rgb(230, 192, 55);
+    border: 7px solid rgb(246, 92, 112);
     border-radius: 10px;
 }
 
-#topic12-item {
+#topic13-item {
     font-size: 20px;
     margin-right: 5px;
 }
 
-#topic12-title {
+#topic13-title {
     color: #949895;
     font-size: 20px;
     font-weight: bold;
