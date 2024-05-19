@@ -93,7 +93,7 @@ const Topic = () => {
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item11" icon={faVenusMars} />
                                 </span>
-                                <a href="/topic11">Tình dục & LGBT</a>   
+                                <a href="/topic11">Tình dục, LGBT</a>   
                             </div>
 
                             <div className="topic-item">                    

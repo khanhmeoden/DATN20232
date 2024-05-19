@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Lato';
+    src: url(../../../asset/Lato-Medium_0.ttf);
+}
+
+.topic9-bar {
+    background: white;
+    padding: 10px 20px;
+    margin-bottom: 30px;
+    border: 7px solid rgb(109, 0, 252);
+    border-radius: 10px;
+}
+
+#topic9-item {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+#topic9-title {
+    color: #949895;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+    line-height: 50px;
+}
