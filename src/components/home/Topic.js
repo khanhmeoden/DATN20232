@@ -30,91 +30,91 @@ const Topic = () => {
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item2" icon={faFaceTired} />
                                 </span>
-                                <a href="/">Căng thẳng & Kiệt quệ tinh thần</a>   
+                                <a href="/topic2">Căng thẳng & Kiệt quệ tinh thần</a>   
                             </div>
                             
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item3" icon={faFaceFrown} />
                                 </span>
-                                <a href="/">Trầm cảm & Lo lắng</a>   
+                                <a href="/topic3">Trầm cảm & Lo lắng</a>   
                             </div>
                             
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item4" icon={faFaceSadTear} />
                                 </span>
-                                <a href="/">Đau buồn & Mất mát</a>   
+                                <a href="/topic4">Đau buồn & Mất mát</a>   
                             </div>                            
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item5" icon={faUserGroup} />
                                 </span>
-                                <a href="/">Các mối quan hệ bạn bè, gia đình, xã hội</a>   
+                                <a href="/topic5">Các mối quan hệ bạn bè, gia đình, xã hội</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item6" icon={faHeart} />
                                 </span>
-                                <a href="/">Độc thân & Các mối quan hệ tình cảm</a>   
+                                <a href="/topic6">Độc thân & Các mối quan hệ tình cảm</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item7" icon={faSackDollar} />
                                 </span>
-                                <a href="/">Công việc, tiền bạc, tài chính</a>   
+                                <a href="/topic7">Công việc, tiền bạc, tài chính</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item8" icon={faBaby} />
                                 </span>
-                                <a href="/">Các vấn đề liên quan đến trẻ em</a>   
+                                <a href="/topic8">Các vấn đề liên quan đến trẻ em</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item9" icon={faSchool} />
                                 </span>
-                                <a href="/">Trường học và học tập</a>   
+                                <a href="/topic9">Trường học và học tập</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item10" icon={faFaceDizzy} />
                                 </span>
-                                <a href="/">Tự tử & Tự làm hại bản thân</a>   
+                                <a href="/topic10">Tự tử & Tự làm hại bản thân</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item11" icon={faVenusMars} />
                                 </span>
-                                <a href="/">Tình dục & LGBT</a>   
+                                <a href="/topic11">Tình dục & LGBT</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item12" icon={faBurger} />
                                 </span>
-                                <a href="/">Ăn uống, dinh duỡng</a>   
+                                <a href="/topic12">Ăn uống, dinh duỡng</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item13" icon={faNotesMedical} />
                                 </span>
-                                <a href="/">Sức khoẻ</a>   
+                                <a href="/topic13">Sức khoẻ</a>   
                             </div>
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item14" icon={faQuestion} />
                                 </span>
-                                <a href="/">Các chủ đề khác</a>   
+                                <a href="/topic14">Các chủ đề khác</a>   
                             </div>                            
                         </div>
                     </div>
