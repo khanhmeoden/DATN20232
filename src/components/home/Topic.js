@@ -72,7 +72,7 @@ const Topic = () => {
                                 <span className="topic-item-icon">
                                     <FontAwesomeIcon className = "item8" icon={faBaby} />
                                 </span>
-                                <a href="/topic8">Các vấn đề liên quan đến trẻ em</a>   
+                                <a href="/topic8">Trẻ em và trẻ vị thành niên</a>   
                             </div>
 
                             <div className="topic-item">                    
