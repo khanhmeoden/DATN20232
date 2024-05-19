@@ -16,7 +16,7 @@ const Topic1 = () => {
 
             <div className="left-content">
                 <div className="topic1-bar">
-                    <h1 id="topic1-title"><FontAwesomeIcon icon={faWineBottle} id="topic1-item"/>Lạm dụng & Nghiện</h1>
+                    <h1 id="topic1-title"><FontAwesomeIcon icon={faWineBottle} id="topic1-item"/>Lạm dụng & Nghiện các chất</h1>
                 </div>
 
                 <div className="topic-posts">
