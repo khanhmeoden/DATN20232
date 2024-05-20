@@ -152,7 +152,7 @@ function RegisterForm() {
           </div>
 
           <div className="inputBoxAddress">
-            <textarea id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Địa chỉ"></textarea>
+            <textarea id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Địa chỉ (không bắt buộc)"></textarea>
           </div> 
 
           <div className="inputBox">
