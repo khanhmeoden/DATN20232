@@ -119,3 +119,12 @@ button[type="submit"]:active {
     width: 250px; 
     cursor: pointer;
 }
+
+.facebook {
+    width: 250px;
+    cursor: pointer;
+}
+
+.facebook-login {
+    margin-bottom: 15px;
+}

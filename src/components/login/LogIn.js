@@ -3,12 +3,13 @@ import './LogIn.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import googlebutton from '../../asset/googlebutton.jpg'
+import facebookbutton from '../../asset/facebookbutton.png'
 
 function Navigrate(url){
   window.location.href = url;
 }
 
-async function auth(){
+async function authGoogle(){
   const respone = await fetch('http://localhost:8080/api/auth/google/callback',{method:'post'});
   const data = await respone.json();
   Navigrate(data.url);
@@ -38,6 +39,9 @@ function LoginForm() {
     setShowPassword(!showPassword);
   };
 
+  const handleFacebookLogin = () => {
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username_or_email, password } = formLogin;
@@ -45,6 +49,8 @@ function LoginForm() {
     try {
       const response = await axios.post('http://localhost:8080/api/login', { usernameOrEmail: username_or_email, password });
       if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
         alert('Đăng nhập thành công !');
         navigate('/home')
       }
@@ -71,8 +77,12 @@ function LoginForm() {
           </div>
           
           {error && <div className="error-message">Bạn đã nhập sai thông tin. Vui lòng thử lại !</div>}
-          <div onClick={() => auth()}>
+          <div className='google-login' onClick={() => authGoogle()}>
             <img src={googlebutton} className='google' alt='Google Sign-in'></img>
+          </div>
+          
+          <div className='facebook-login' onClick={() => handleFacebookLogin()}>
+            <img src={facebookbutton} className='facebook' alt='Đăng nhập với tài khoản Facebook'></img>
           </div>
 
           <button type="submit">Đăng nhập</button>
