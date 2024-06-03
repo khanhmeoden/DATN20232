@@ -116,19 +116,19 @@ function RegisterForm() {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="inputBox">
-            <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Tên người dùng" required />
+            <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Tên người dùng   (*)" required />
           </div>
 
           <div className="inputBox">
-            <input type="text" id="fullname" name="fullname" value={formData.fullname} onChange={handleChange} placeholder="Họ và tên" required />
+            <input type="text" id="fullname" name="fullname" value={formData.fullname} onChange={handleChange} placeholder="Họ và tên   (*)" required />
           </div>
 
           <div className="inputBox">
-            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email   (*)" required />
           </div>
 
           <div className="inputBox">
-            <input type={showPassword ? 'text' : 'password'} id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Mật khẩu" required />
+            <input type={showPassword ? 'text' : 'password'} id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Mật khẩu   (*)" required />
             <button type="button" onClick={handleTogglePassword}>{showPassword ? 'Ẩn' : 'Hiện'}</button>
           </div>
 
@@ -139,7 +139,7 @@ function RegisterForm() {
 
           <div className="inputBoxGender">
             <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required>
-              <option hidden value="">Chọn giới tính</option>
+              <option hidden value="">Giới tính   (*)</option>
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
               <option value="Khác">Giới tính khác</option>
@@ -147,7 +147,7 @@ function RegisterForm() {
           </div>
 
           <div className="inputBox">
-            <label htmlFor="dob">Ngày sinh</label>
+            <label htmlFor="dob">Ngày sinh   (*)</label>
             <input type="date" id="dob" name="dob" max={maxDate} min={minDate} value={formData.dob} onChange={handleChange} required />        
           </div>
 
