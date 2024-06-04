@@ -133,7 +133,7 @@ function RegisterForm() {
           </div>
 
           <div className="inputBox">
-            <input type={showConfirmPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Xác nhận mật khẩu" required />
+            <input type={showConfirmPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Xác nhận mật khẩu   (*)" required />
             <button type="button" onClick={handleToggleConfirmPassword}>{showConfirmPassword ? 'Ẩn' : 'Hiện'}</button>
           </div>
 

@@ -11,7 +11,7 @@ function Profile() {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://localhost:8080/api/user-info', {
+        const response = await axios.get('http://localhost:8080/api/login', {
           headers: {
             Authorization: `Bearer ${token}`
           }

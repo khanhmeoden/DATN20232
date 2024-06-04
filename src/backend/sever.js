@@ -5,7 +5,6 @@ const cors = require('cors');
 const app = express();
 const port = 8080; 
 const jwt = require('jsonwebtoken');
-const topicRoutes = require('./topicControl')
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -178,7 +177,7 @@ app.get('/api/recent-posts', (req, res) => {
     // Lấy thời gian hiện tại của yêu cầu
     const requestTime = new Date();
 
-    const query = `SELECT post_id, username, avatarUrl, title, topic, purpose, likeCount, datePosted 
+    const query = `SELECT username, avatarUrl, title, topic, purpose, likeCount, datePosted 
                 FROM posts 
                 JOIN users ON posts.userID = users.id 
                 ORDER BY datePosted DESC 
@@ -197,7 +196,7 @@ app.get('/api/recent-posts', (req, res) => {
 });
 
 // API endpoint để lấy thông tin bài viết theo chủ đề
-app.use('/api/topic', topicRoutes);
+// app.use('/api/topic', topicRoutes);
 
 
 // API endpoint để tìm kiếm bài viết theo từ khoá
