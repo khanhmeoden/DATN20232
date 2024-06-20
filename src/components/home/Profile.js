@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import unknown_user from '../../asset/unknown-user.jpg';
+import './Profile.css';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -56,9 +58,10 @@ const Profile = () => {
 
   return (
       <div className="user-profile">
-          <img src={user.avatarUrl} alt={`${user.username}'s avatar`} className="user-avatar" />
-          <h1 className="user-fullname">{user.fullname}</h1>
-          <p className="user-username">@{user.username}</p>
+        <h1 className="welcome">Chào mừng bạn đã đến với website</h1>
+        <img src={user.avatarUrl || unknown_user} alt="Avatar" className={user.avatarUrl ? "user-profile-avatar" : "profile-default-avatar"} />
+        <h1 className="user-profile-fullname">{user.fullname}</h1>
+        <p className="user-profile-username">@{user.username}</p>
       </div>
   );
 }

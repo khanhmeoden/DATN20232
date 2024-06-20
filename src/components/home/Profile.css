@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'Lato';
+    src: url(../../asset/Lato-Medium_0.ttf);
+}
+
+.user-profile {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.profile-default-avatar {
+    height: 150px;
+    border-radius: 10px;
+}
+
+.user-profile-fullname {
+    font-size: 25px;
+}
+
+.user-profile-username {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.welcome {
+    font-size: 18px;
+    color: pink;
+    font-family: "Lato", sans-serif;
+    margin-bottom: 10px;
+}

@@ -24,7 +24,7 @@ const NavBar = () => {
                 <li className="link"><Link to="/home" className="nav">Trang chủ</Link></li>
                 <li className="link"><Link to="/create-post" className="nav">Tạo bài viết</Link></li>
                 <li className="link"><Link to="/user-info" className="nav">Hồ sơ cá nhân</Link></li>
-                <li className="link"><Link to="/message" className="nav">Tin nhắn</Link></li>
+                {/* <li className="link"><Link to="/message" className="nav">Tin nhắn</Link></li> */}
                 <li className="link"><Link to="/" onClick={handleLogout} className="nav">Đăng xuất</Link></li>
             </ul>
         </div>

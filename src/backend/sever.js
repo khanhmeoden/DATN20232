@@ -165,18 +165,6 @@ app.put('/api/update-user', authenticateJWT, (req, res) => {
     });
 });
 
-// API tải lên avatar
-app.post('/api/upload-avatar', authenticateJWT, (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ message: 'Không tìm thấy tệp tải lên' });
-    }
-
-    // Đường dẫn đến tệp avatar
-    const avatarUrl = `${req.file.filename}`;
-    res.status(200).json({ message: 'Tải lên avatar thành công!', avatarUrl: avatarUrl });
-});
-
-
 // Sử dụng middleware cho các route cần bảo vệ
 app.get('/api/protected-route', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'Bạn đã truy cập thành công vào route bảo vệ !', user: req.user });
@@ -184,13 +172,14 @@ app.get('/api/protected-route', authenticateJWT, (req, res) => {
 
 // Endpoint API để thêm bài viết mới
 app.post('/api/add-post', authenticateJWT, (req, res) => {
+    console.log(req.body)
     const { title, content, topic, purpose, imageURL, videoURL } = req.body;
     const userId = req.user.id; // Lấy id của người dùng từ JWT
 
     // Kiểm tra dữ liệu đầu vào
-    if (!title || !content || !topic || !purpose) {
-        return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin bài viết' });
-    }
+    // if (!title || !content || !topic || !purpose) {
+    //     return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin bài viết' });
+    // }
 
     const query = `INSERT INTO posts (userID, title, content, topic, purpose, datePosted, imageURL, videoURL) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`;
     db.query(query, [userId, title, content, topic, purpose, imageURL, videoURL], (err, result) => {
@@ -205,7 +194,22 @@ app.post('/api/add-post', authenticateJWT, (req, res) => {
                     console.error('Lỗi cập nhật số lượng bài viết:', err);
                     return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
                 } else {
-                    return res.status(200).json({ message: 'Bài viết đã được đăng thành công!', postId: result.insertId });
+                    // Lấy username và avatarUrl của người dùng
+                    const getUserInfoQuery = `SELECT username, avatarUrl FROM users WHERE id = ?`;
+                    db.query(getUserInfoQuery, [userId], (err, userResult) => {
+                        if (err) {
+                            console.error('Lỗi lấy thông tin người dùng:', err);
+                            return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+                        } else {
+                            const userInfo = userResult[0];
+                            return res.status(200).json({ 
+                                message: 'Bài viết đã được đăng thành công!', 
+                                postId: result.insertId, 
+                                username: userInfo.username, 
+                                avatarUrl: userInfo.avatarUrl 
+                            });
+                        }
+                    });
                 }
             });
         }

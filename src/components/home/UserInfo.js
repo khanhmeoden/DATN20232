@@ -106,7 +106,7 @@ const UserInfo = () => {
             }
         } catch (error) {
             console.error('Lỗi khi cập nhật thông tin người dùng:', error);
-            alert('Có lỗi xảy ra khi cập nhật thông tin.');
+            alert('Username hoặc email đã tồn tại.');
         }
     };
 

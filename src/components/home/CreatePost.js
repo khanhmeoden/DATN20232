@@ -12,10 +12,11 @@ const CreatePost = () => {
         content: '',
         topic: '',
         purpose: '',
-        time: '',
         imageURL: null, 
         videoURL: null
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const topics = [
         'Lạm dụng, nghiện các chất',
@@ -77,10 +78,13 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError(null);
         const currentTime = getCurrentTime();
         
         // Tạo FormData để gửi dữ liệu bao gồm cả file
         const formData = new FormData();
+        // console.log(postData)
         formData.append('title', postData.title);
         formData.append('content', postData.content);
         formData.append('topic', postData.topic);
@@ -92,12 +96,13 @@ const CreatePost = () => {
         if (postData.videoURL) {
             formData.append('videoURL', postData.videoURL);
         }
+        console.log(postData)
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:8080/api/add-post', formData, {
+            const response = await axios.post('http://localhost:8080/api/add-post', postData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 }
             });
@@ -116,7 +121,9 @@ const CreatePost = () => {
             }
         } catch (error) {
             console.error('Lỗi khi đăng bài viết:', error);
-            alert("Đã xảy ra lỗi khi đăng bài viết. Vui lòng thử lại sau!");
+            setError("Đã xảy ra lỗi khi đăng bài viết. Vui lòng thử lại sau!");
+        } finally {
+            setIsLoading(false);
         }
     };
     
@@ -167,8 +174,12 @@ const CreatePost = () => {
                             <label htmlFor="file">Đăng tải ảnh hoặc video nếu có:</label>
                             <input type="file" id="post-file" name="file" accept="image/*, video/*" multiple onChange={handleFileChange}/>
                         </div>
+
+                        {error && <div className="error">{error}</div>}
                         
-                        <button className="submit-post" type="submit">Đăng bài</button>
+                        <button className="submit-post" type="submit" disabled={isLoading}>
+                            {isLoading ? 'Đang đăng...' : 'Đăng bài'}
+                        </button>
                     </form>
                 </div>
             </div>
