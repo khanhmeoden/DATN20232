@@ -29,7 +29,7 @@ const CreatePost = () => {
         'Trường học và học tập',
         'Tự tử & Tự làm hại bản thân',
         'Tình dục & LGBT',
-        'Ăn uống, dinh duỡng',
+        'Ăn uống, dinh dưỡng',
         'Sức khoẻ',
         'Các chủ đề khác'
     ];
@@ -60,39 +60,47 @@ const CreatePost = () => {
         const imageFiles = files.filter(file => file.type.startsWith('image/'));
         const videoFiles = files.filter(file => file.type.startsWith('video/'));
 
-        // Chỉ lấy ảnh đầu tiên từ danh sách các tệp ảnh
         if (imageFiles.length > 0) {
-            // Gán imageURL cho ảnh đầu tiên
-                setPostData({
-                    ...postData,
-                    imageURL: imageFiles[0]
-                });
-            }
-        
+            setPostData({
+                ...postData,
+                imageURL: imageFiles[0]
+            });
+        }
 
-        // Chỉ lấy video đầu tiên từ danh sách các tệp video
         if (videoFiles.length > 0) {
-            // Gán videoURL cho video đầu tiên        
             setPostData({
                 ...postData,
                 videoURL: videoFiles[0]
             });
-            
         }
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const currentTime = getCurrentTime();
-        // Thêm thời gian vào đối tượng postData
-        setPostData({
-            ...postData,
-            time: currentTime
-        });
+        
+        // Tạo FormData để gửi dữ liệu bao gồm cả file
+        const formData = new FormData();
+        formData.append('title', postData.title);
+        formData.append('content', postData.content);
+        formData.append('topic', postData.topic);
+        formData.append('purpose', postData.purpose);
+        formData.append('time', currentTime);
+        if (postData.imageURL) {
+            formData.append('imageURL', postData.imageURL);
+        }
+        if (postData.videoURL) {
+            formData.append('videoURL', postData.videoURL);
+        }
 
         try {
-            const response = await axios.post('http://localhost:8080/api/logins', postData);
+            const token = localStorage.getItem('token');
+            const response = await axios.post('http://localhost:8080/api/add-post', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + token
+                }
+            });
             if (response.status === 200) {
                 alert("Bài viết đã được đăng thành công!");
                 // Đặt lại trạng thái postData để xóa dữ liệu đã nhập sau khi đăng bài thành công

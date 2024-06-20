@@ -1,43 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-// import './Profile.css';
 
-function Profile() {
-  const [profile, setProfile] = useState(null);
+const Profile = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return;
+      const fetchUserInfo = async () => {
+          try {
+              const token = localStorage.getItem('token');
+                  console.log('Stored token:', token);
 
-      try {
-        const response = await axios.get('http://localhost:8080/api/login', {
-          headers: {
-            Authorization: `Bearer ${token}`
+              const response = await fetch('http://localhost:8080/api/user-info', {
+                  method: 'GET',
+                  headers: {
+                      'Authorization': 'Bearer ' + localStorage.getItem('token')
+                  }
+              });
+
+              const data = await response.json();
+
+              if (response.ok) {
+                  setUser(data.user);
+              } else {
+                if (response.status === 401) {
+                  setError('Token không hợp lệ, vui lòng đăng nhập lại.');
+                  window.location.href = '/login';
+                } else {
+                  setError(data.message || 'Failed to fetch user info');
+                }
+                console.error('Error response:', data);
+              }
+          } catch (error) {
+              setError(error.message);
+              console.error('Fetch error:', error);
+          } finally {
+              setLoading(false);
           }
-        });
-        setProfile(response.data.user);
-      } catch (error) {
-        console.error('Error fetching the profile', error);
-      }
-    };
+      };
 
-    fetchProfile();
+      fetchUserInfo();
   }, []);
 
+  if (loading) {
+      return <div>Loading...</div>;
+  }
+
+  if (error) {
+      return <div>Error: {error}</div>;
+  }
+
+  if (!user) {
+      return <div>No user data found</div>;
+  }
+
   return (
-    <div className="profile">
-      {!profile ? (
-        <div className='loading'>Loading...</div>
-      ) : (
-        <div className='user-brief-infor'>
-          <h1>Profile</h1>
-          <p><strong>Username:</strong> {profile.username}</p>
-          <p><strong>Full Name:</strong> {profile.fullname}</p>
-          <img src={profile.avatarUrl} alt="Avatar" />
-        </div>
-      )}
-    </div>
+      <div className="user-profile">
+          <img src={user.avatarUrl} alt={`${user.username}'s avatar`} className="user-avatar" />
+          <h1 className="user-fullname">{user.fullname}</h1>
+          <p className="user-username">@{user.username}</p>
+      </div>
   );
 }
 

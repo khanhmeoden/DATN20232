@@ -5,23 +5,23 @@ import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 
 const RecentPost = () => {
-    // const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     const fetchPosts = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:8080/api/recent-posts');
-    //             setPosts(response.data);
-    //             setLoading(false);
-    //         } catch (error) {
-    //             console.error('Error fetching posts:', error);
-    //             setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/recent-posts');
+                setPosts(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+                setLoading(false);
+            }
+        };
 
-    //     fetchPosts();
-    // }, []);
+        fetchPosts();
+    }, []);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -46,19 +46,6 @@ const RecentPost = () => {
                     <div className="recent-post-box like">Thích</div>  
                     <div className="recent-post-box time">Thời gian</div>  
                 </div>
-                {/* {posts.map((post) => (
-                    <div key={post.post_id} className="recent-post-row">
-                        <div className="recent-post-box author">
-                            <img src={post.avatarUrl} alt="avatar" className="avatar"/>
-                            {post.username}
-                        </div>
-                        <div className="recent-post-box title">{post.title}</div>
-                        <div className="recent-post-box topic">{post.topic}</div>
-                        <div className="recent-post-box purpose">{post.purpose}</div>
-                        <div className="recent-post-box like">{post.likeCount}</div>
-                        <div className="recent-post-box time">{new Date(post.datePosted).toLocaleString()}</div>
-                    </div>
-                ))} */}
             </div>
         </div>
     );

@@ -14,7 +14,8 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-app.use(cors());app.use(bodyParser.json({ limit: '10mb' })); 
+app.use(cors());
+app.use(bodyParser.json({ limit: '10mb' })); 
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' })); 
 
 const jwt_secret = 'b96df5dab1b40f674d2c33871193263ce27a5c1bc824a1365f3bb0255ec47056';
@@ -34,6 +35,7 @@ app.post('/api/users', (req, res) => {
     });
 });
 
+// API đăng nhập
 app.post('/api/login', (req, res) => {
     const { usernameOrEmail, password } = req.body;
 
@@ -41,43 +43,49 @@ app.post('/api/login', (req, res) => {
     const query = `
         SELECT 
             users.id, users.username, users.email, users.fullname, users.dob, 
-            users.gender, users.address, users.avatarUrl, 
+            users.gender, users.address, users.avatarUrl, users.password,
             userStats.totalPosts, userStats.totalComments, userStats.totalLikes, userStats.totalUnlikes 
         FROM users 
         LEFT JOIN userStats ON users.id = userStats.userID 
-        WHERE (users.username = ? OR users.email = ?) AND users.password = ?`;
-    db.query(query, [usernameOrEmail, usernameOrEmail, password], (err, result) => {
+        WHERE users.username = ? OR users.email = ?`;
+    db.query(query, [usernameOrEmail, usernameOrEmail], (err, result) => {
         if (err) {
             console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
-            res.status(500).json('Lỗi máy chủ nội bộ');
+            return res.status(500).json('Lỗi máy chủ nội bộ');
         } else if (result.length > 0) {
             const user = result[0];
-            console.log('Người dùng đăng nhập thành công :', usernameOrEmail);
-            // Tạo jwt 
-            const token = jwt.sign({
-                id: user.id,
-                username: user.username,
-                fullname: user.fullname,
-                avatarUrl: user.avatarUrl
-            }, jwt_secret, { expiresIn: '3h' });
-            // Trả về token và thông tin người dùng
-            return res.status(200).json({ 
-                message: 'Đăng nhập thành công !',
-                token: token,
-                user: {
+            // So sánh mật khẩu plaintext
+            if (password === user.password) {
+                console.log('Người dùng đăng nhập thành công:', usernameOrEmail);
+                // Tạo jwt
+                const token = jwt.sign({
                     id: user.id,
                     username: user.username,
                     fullname: user.fullname,
-                    avatarUrl: user.avatarUrl,
-                    totalPosts: user.totalPosts,
-                    totalComments: user.totalComments,
-                    totalLikes: user.totalLikes,
-                    totalUnlikes: user.totalUnlikes
-                }
-            });
+                    avatarUrl: user.avatarUrl
+                }, jwt_secret, { expiresIn: '3h' });
+                // Trả về token và thông tin người dùng
+                return res.status(200).json({
+                    message: 'Đăng nhập thành công!',
+                    token: token,
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        fullname: user.fullname,
+                        avatarUrl: user.avatarUrl,
+                        totalPosts: user.totalPosts,
+                        totalComments: user.totalComments,
+                        totalLikes: user.totalLikes,
+                        totalUnlikes: user.totalUnlikes
+                    }
+                });
+            } else {
+                console.log('Sai mật khẩu');
+                return res.status(401).json('Sai tên đăng nhập hoặc mật khẩu');
+            }
         } else {
-            console.log('Sai tên đăng nhập hoặc mật khẩu');
-            res.status(401).json('Sai tên đăng nhập hoặc mật khẩu');
+            console.log('Không tìm thấy người dùng');
+            return res.status(401).json('Sai tên đăng nhập hoặc mật khẩu');
         }
     });
 });
@@ -108,7 +116,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
     const query = `
         SELECT 
             users.id, users.username, users.email, users.fullname, users.dob, 
-            users.gender, users.address, users.avatarUrl, 
+            users.gender, users.address, users.avatarUrl,
             userStats.totalPosts, userStats.totalComments, userStats.totalLikes, userStats.totalUnlikes 
         FROM users 
         LEFT JOIN userStats ON users.id = userStats.userID 
@@ -142,6 +150,33 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
     });
 });
 
+// API cập nhật thông tin người dùng
+app.put('/api/update-user', authenticateJWT, (req, res) => {
+    const { username, email, fullname, dob, gender, address, avatarUrl } = req.body;
+    const userId = req.user.id;
+
+    const query = `UPDATE users SET username = ?, email = ?, fullname = ?, dob = ?, gender = ?, address = ?, avatarUrl = ? WHERE id = ?`;
+    db.query(query, [username, email, fullname, dob, gender, address, avatarUrl, userId], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi cập nhật thông tin người dùng:', err);
+            return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        }
+        res.status(200).json({ message: 'Cập nhật thông tin thành công!', user: { username, email, fullname, dob, gender, address, avatarUrl } });
+    });
+});
+
+// API tải lên avatar
+app.post('/api/upload-avatar', authenticateJWT, (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'Không tìm thấy tệp tải lên' });
+    }
+
+    // Đường dẫn đến tệp avatar
+    const avatarUrl = `${req.file.filename}`;
+    res.status(200).json({ message: 'Tải lên avatar thành công!', avatarUrl: avatarUrl });
+});
+
+
 // Sử dụng middleware cho các route cần bảo vệ
 app.get('/api/protected-route', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'Bạn đã truy cập thành công vào route bảo vệ !', user: req.user });
@@ -152,25 +187,31 @@ app.post('/api/add-post', authenticateJWT, (req, res) => {
     const { title, content, topic, purpose, imageURL, videoURL } = req.body;
     const userId = req.user.id; // Lấy id của người dùng từ JWT
 
+    // Kiểm tra dữ liệu đầu vào
+    if (!title || !content || !topic || !purpose) {
+        return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin bài viết' });
+    }
+
     const query = `INSERT INTO posts (userID, title, content, topic, purpose, datePosted, imageURL, videoURL) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`;
     db.query(query, [userId, title, content, topic, purpose, imageURL, videoURL], (err, result) => {
         if (err) {
             console.error('Lỗi khi thêm bài viết mới:', err);
-            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+            return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
         } else {
-             // Update user's totalPosts
-             const updateUserStatsQuery = `UPDATE userStats SET totalPosts = totalPosts + 1 WHERE userID = ?`;
-             db.query(updateUserStatsQuery, [userId], (err, result) => {
-                 if (err) {
-                     console.error('Lỗi cập nhật bài viết c:', err);
-                     res.status(500).json('Lỗi máy chủ nội bộ');
-                 } else {
-                     res.status(200).json('Bài viết đã được đăng thành công!');
-                 }
-             });
+            // Update user's totalPosts
+            const updateUserStatsQuery = `UPDATE userStats SET totalPosts = totalPosts + 1 WHERE userID = ?`;
+            db.query(updateUserStatsQuery, [userId], (err) => {
+                if (err) {
+                    console.error('Lỗi cập nhật số lượng bài viết:', err);
+                    return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+                } else {
+                    return res.status(200).json({ message: 'Bài viết đã được đăng thành công!', postId: result.insertId });
+                }
+            });
         }
     });
 });
+
 
 // Bài viết gần nhất
 app.get('/api/recent-posts', (req, res) => {
@@ -194,10 +235,6 @@ app.get('/api/recent-posts', (req, res) => {
         });
     });
 });
-
-// API endpoint để lấy thông tin bài viết theo chủ đề
-// app.use('/api/topic', topicRoutes);
-
 
 // API endpoint để tìm kiếm bài viết theo từ khoá
 app.get('/search', (req, res) => {
@@ -231,3 +268,4 @@ app.get('/search', (req, res) => {
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
+

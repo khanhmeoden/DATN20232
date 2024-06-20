@@ -1,7 +1,7 @@
 import React from "react";
 import './NavBar.css';
 import logo from '../../asset/psychological.jpg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const NavBar = () => {
     const navigate = useNavigate(); 
@@ -10,19 +10,24 @@ const NavBar = () => {
         navigate('/home');
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/'); // Điều hướng người dùng đến trang đăng nhập hoặc trang chủ
+    };
+
     return (
-            <div className="nav">
-                <div className="logo-container" onClick={handleLogoClick}>
-                    <img src={logo} alt="Diễn đàn tân lý" className="logo"></img>                    
-                </div>
-                <ul className="menu-list">
-                    <li className="link"><a href="/home" className="nav">Trang chủ</a></li>
-                    <li className="link"><a href="/create-post" className="nav">Tạo bài viết</a></li>
-                    <li className="link"><a href="/user-info" className="nav">Hồ sơ cá nhân</a></li>
-                    <li className="link"><a href="/message" className="nav">Tin nhắn</a></li>
-                    <li className="link"><a href="/" className="nav">Đăng xuất</a></li>
-                </ul>
+        <div className="nav">
+            <div className="logo-container" onClick={handleLogoClick}>
+                <img src={logo} alt="Diễn đàn tâm lý" className="logo" />
             </div>
+            <ul className="menu-list">
+                <li className="link"><Link to="/home" className="nav">Trang chủ</Link></li>
+                <li className="link"><Link to="/create-post" className="nav">Tạo bài viết</Link></li>
+                <li className="link"><Link to="/user-info" className="nav">Hồ sơ cá nhân</Link></li>
+                <li className="link"><Link to="/message" className="nav">Tin nhắn</Link></li>
+                <li className="link"><Link to="/" onClick={handleLogout} className="nav">Đăng xuất</Link></li>
+            </ul>
+        </div>
     );
 }
 
