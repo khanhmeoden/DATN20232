@@ -6,6 +6,8 @@ import Profile from "./Profile";
 import Search from "./Search";
 import RecentActivity from "./RecentActivity";
 import unknown_user from "../../asset/unknown-user.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const UserInfo = () => {
     const [user, setUser] = useState(null);
@@ -24,6 +26,7 @@ const UserInfo = () => {
         totalUnlikes: 0
     });
     const [avatarFile, setAvatarFile] = useState(null);
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -54,7 +57,25 @@ const UserInfo = () => {
                 }
             }
         };
+
+        const fetchUserPosts = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await axios.get('http://localhost:8080/api/user-posts', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    setPosts(response.data);
+                } catch (error) {
+                    console.error('Lỗi khi lấy danh sách bài viết:', error);
+                }
+            }
+        };
+
         fetchUserInfo();
+        fetchUserPosts();
     }, []);
 
     // Hàm định dạng ngày sinh
@@ -118,6 +139,28 @@ const UserInfo = () => {
         }
     };
 
+    const handleDeletePost = async (postId) => {
+        if (window.confirm('Bạn có chắc chắn muốn xoá bài viết này không?')) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await axios.delete(`http://localhost:8080/api/posts/${postId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    if (response.status === 200) {
+                        alert('Xoá bài viết thành công!');
+                        setPosts(posts.filter(post => post.post_id !== postId));
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi xoá bài viết:', error);
+                    alert('Có lỗi xảy ra khi xoá bài viết.');
+                }
+            }
+        }
+    };
+
     return (
         <div className="main-content">
             <div className="navbar">
@@ -138,6 +181,7 @@ const UserInfo = () => {
                     <button className={activeTab === 'info' ? 'active' : ''} onClick={() => setActiveTab('info')}>Thông tin người dùng</button>
                     <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>Thống kê</button>
                     <button className={activeTab === 'edit' ? 'active' : ''} onClick={() => setActiveTab('edit')}>Chỉnh sửa thông tin</button>
+                    <button className={activeTab === 'posts' ? 'active' : ''} onClick={() => setActiveTab('posts')}>Bài viết</button>
                 </div>
 
                 <div className="tab-content">
@@ -197,6 +241,41 @@ const UserInfo = () => {
                             </div>
                             <button type="submit">Lưu thay đổi</button>
                         </form>
+                    )}
+                    {activeTab === 'posts' && (
+                        <div className="user-posts">
+                            <h2>Bài viết</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th className="stt-column">STT</th>
+                                        <th className="title-column">Tiêu đề bài viết</th>
+                                        <th className="topic-column">Chủ đề bài viết</th>
+                                        <th className="purpose-column">Mục đích bài viết</th>
+                                        <th className="likes-column">Số lượt thích/Không thích</th>
+                                        <th className="comments-column">Số lượt bình luận</th>
+                                        <th className="date-column">Thời gian đăng tải</th>
+                                        <th className="delete-column">Xoá bài</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {posts.map((post, index) => (
+                                        <tr key={post.post_id}>
+                                            <td className="stt-column">{index + 1}</td>
+                                            <td className="title-column">{post.title}</td>
+                                            <td className="topic-column">{post.topic}</td>
+                                            <td className="purpose-column">{post.purpose}</td>
+                                            <td className="likes-column">{post.likeCount}/{post.unlikeCount}</td>
+                                            <td className="comments-column">{post.commentCount}</td>
+                                            <td className="date-column">{formatDate(post.datePosted)}</td>
+                                            <td className="delete-column">
+                                                <div onClick={() => handleDeletePost(post.post_id)}><FontAwesomeIcon icon={faTrash}/></div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     )}
                 </div>
             </div>

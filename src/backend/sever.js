@@ -128,6 +128,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
             res.status(500).json('Lỗi máy chủ nội bộ');
         } else if (result.length > 0) {
             const user = result[0];
+            const avatarBase64 = user.avatarUrl ? Buffer.from(user.avatarUrl).toString('base64') : null;
             res.status(200).json({ 
                 user: {
                     id: user.id,
@@ -137,7 +138,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
                     dob: user.dob,
                     gender: user.gender,
                     address: user.address,
-                    avatarUrl: user.avatarUrl,
+                    avatarUrl: avatarBase64 ? `data:image/jpeg;base64,${avatarBase64}` : null,
                     total_posts: user.total_posts,
                     total_comments: user.total_comments,
                     total_likes: user.total_likes,
@@ -164,6 +165,51 @@ app.put('/api/update-user', authenticateJWT, (req, res) => {
         res.status(200).json({ message: 'Cập nhật thông tin thành công!', user: { username, email, fullname, dob, gender, address, avatarUrl } });
     });
 });
+
+// Endpoint để lấy danh sách bài viết của người dùng
+app.get('/api/user-posts', authenticateJWT, (req, res) => {
+    const userID = req.user.id;
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.topic, p.purpose, p.datePosted, p.likeCount, p.unlikeCount,
+            (SELECT COUNT(*) FROM comments c WHERE c.postID = p.postID) AS commentCount
+        FROM posts p
+        WHERE p.userID = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [userID], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+// Endpoint để xóa bài viết
+app.delete('/api/posts/:postId', authenticateJWT, (req, res) => {
+    const { postId } = req.params;
+    const userID = req.user.id;
+
+    const query = `
+        DELETE FROM posts 
+        WHERE postID = ? AND userID = ?`;
+
+    db.query(query, [postId, userID], (err, result) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            return res.status(500).json('Lỗi máy chủ nội bộ');
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json('Không tìm thấy bài viết của bạn');
+        }
+        res.status(200).json('Xoá bài viết thành công');
+    });
+});
+
 
 // Sử dụng middleware cho các route cần bảo vệ
 app.get('/api/protected-route', authenticateJWT, (req, res) => {
@@ -203,7 +249,6 @@ app.post('/api/add-post', authenticateJWT, (req, res) => {
         }
     });
 });
-
 
 // Bài viết gần nhất
 app.get('/api/recent-posts', (req, res) => {
@@ -254,10 +299,8 @@ app.get('/search', (req, res) => {
       }
       res.json(results);
     });
-});
-    
+}); 
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
-

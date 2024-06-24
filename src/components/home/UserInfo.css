@@ -138,3 +138,70 @@
     font-weight: bold;
 }
 
+.user-posts {
+    background-color: orange;
+    padding: 50px 15px;
+    margin-right: -175px;
+}
+
+.user-posts h2 {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+}
+
+.user-posts table {
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0px 15px;
+}
+
+.user-posts th, .user-posts td {
+    border-right: 3px solid white;
+    padding-right: 1px;
+}
+
+.user-posts th:last-child, .user-posts td:last-child {
+    border-right: none;
+}
+
+.user-posts th.title-column, 
+.user-posts td.title-column {
+    width: 175px;
+}
+
+.user-posts th.topic-column, 
+.user-posts td.topic-column {
+    width: 225px;
+}
+
+.user-posts th.purpose-column, 
+.user-posts td.purpose-column {
+    width: 150px;
+}
+
+.user-posts th.likes-column, 
+.user-posts td.likes-column {
+    width: 100px;
+}
+
+.user-posts th.comments-column, 
+.user-posts td.comments-column {
+    width: 90px;
+}
+
+.user-posts th.date-column, 
+.user-posts td.date-column {
+    width: 100px;
+}
+
+.user-posts td.delete-column div {
+    color: red;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.user-posts td.delete-column div:hover {
+    color: rgb(161, 0, 0);
+    font-size: 16px;
+}

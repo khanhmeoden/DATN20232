@@ -45,12 +45,19 @@ function RegisterForm() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, avatar: file });
-      
-      // Hiển thị ảnh trước khi tải lên
       const reader = new FileReader();
       reader.onload = function(event) {
-        setFormData({ ...formData, avatarUrl: event.target.result });
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = function() {
+          if (img.width > 360 || img.height > 360) {
+            alert('Ảnh đại diện có kích thước quá lớn, vui lòng lựa chọn lại.');
+            setFormData({ ...formData, avatarUrl: defaultAvatarUrl });
+            e.target.value = null; // Reset file input
+          } else {
+            setFormData({ ...formData, avatarUrl: event.target.result, avatar: file });
+          }
+        };
       };
       reader.readAsDataURL(file);
     } else {
@@ -77,7 +84,6 @@ function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra mặt khẩu
     if (!validatePasswordMatch()) {
       alert('Mật khẩu và xác nhận mật khẩu không trùng khớp.');
       return;
@@ -89,24 +95,24 @@ function RegisterForm() {
     }
 
     try {
-        const registerResponse = await axios.post('http://localhost:8080/api/users', formData);
-        console.log("data: ", registerResponse.data); // In ra kết quả từ backend
-        if (registerResponse.data && registerResponse.data.message === 'Tạo mới người dùng thành công !') {
-            console.log('OK');
-        } else {
-            alert('Bạn đã đăng ký thành công');
-        }
-      } catch (error) {
-          console.error('Error:', error);
-          if (error.response && error.response.status === 500) { // Kiểm tra nếu lỗi là do trùng lặp
-              alert('Username hoặc email đã tồn tại. Vui lòng thử lại nhé');
-          } else {
-              alert('Đã xảy ra lỗi khi đăng ký');
-          }
+      const registerResponse = await axios.post('http://localhost:8080/api/users', formData);
+      console.log("data: ", registerResponse.data); 
+      if (registerResponse.data && registerResponse.data.message === 'Tạo mới người dùng thành công !') {
+        console.log('OK');
+      } else {
+        alert('Bạn đã đăng ký thành công');
       }
-};
+    } catch (error) {
+      console.error('Error:', error);
+      if (error.response && error.response.status === 500) {
+        alert('Username hoặc email đã tồn tại. Vui lòng thử lại nhé');
+      } else {
+        alert('Đã xảy ra lỗi khi đăng ký');
+      }
+    }
+  };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="container">
@@ -156,17 +162,16 @@ function RegisterForm() {
           </div> 
 
           <div className="inputBox">
-            <label htmlFor="avt">Avatar</label>
+            <label htmlFor="avatar">Avatar</label>
             <input type="file" id="avatar" name="avatar" onChange={handleFileChange} accept="image/*" />
-            {/* Hiển thị ảnh trước khi tải lên */}
             {formData.avatarUrl ? (
-            <div className="avatar-preview">
-              <img src={formData.avatarUrl} alt="Avatar Preview" className="avatar-image" />
-            </div>
+              <div className="avatar-preview">
+                <img src={formData.avatarUrl} alt="Avatar Preview" className="avatar-image" />
+              </div>
             ) : (
-            <div className="avatar-preview">
-              <img src={defaultAvatarUrl} alt="Default Avatar" className="avatar-image" />
-            </div>
+              <div className="avatar-preview">
+                <img src={defaultAvatarUrl} alt="Default Avatar" className="avatar-image" />
+              </div>
             )}
           </div>
 
