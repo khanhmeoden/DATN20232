@@ -118,3 +118,8 @@
     cursor: pointer;
     margin-left: 14em;
 }
+
+button.submit-post {
+    margin-left: 25%;
+    width: 30%;
+}

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import './LogIn.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import googlebutton from '../../asset/googlebutton.jpg';
 import facebookbutton from '../../asset/facebookbutton.png';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 function LoginForm() {
   const [formLogin, setFormLogin] = useState({
@@ -70,11 +71,19 @@ function LoginForm() {
           {loading && <div className="loading-message">Đang xử lý...</div>}
 
           <div className='google-login'>
-            <img src={googlebutton} className='google' alt='Google Sign-in' />
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                const decode = jwtDecode(credentialResponse?.credential);
+                console.log(decode);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />;
           </div>
 
           <div className='facebook-login'>
-            <img src={facebookbutton} className='facebook' alt='Đăng nhập với tài khoản Facebook' />
+            <img src={facebookbutton} className='facebook' alt='Đăng nhập với tài khoản Facebook'/>
           </div>
 
           <button type="submit" disabled={loading}>Đăng nhập</button>

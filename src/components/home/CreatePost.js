@@ -11,9 +11,7 @@ const CreatePost = () => {
         title: '',
         content: '',
         topic: '',
-        purpose: '',
-        imageURL: null, 
-        videoURL: null
+        purpose: ''
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -56,51 +54,23 @@ const CreatePost = () => {
         return formattedTime;
     };
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        const imageFiles = files.filter(file => file.type.startsWith('image/'));
-        const videoFiles = files.filter(file => file.type.startsWith('video/'));
-
-        if (imageFiles.length > 0) {
-            setPostData({
-                ...postData,
-                imageURL: imageFiles[0]
-            });
-        }
-
-        if (videoFiles.length > 0) {
-            setPostData({
-                ...postData,
-                videoURL: videoFiles[0]
-            });
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
         const currentTime = getCurrentTime();
-        
-        // Tạo FormData để gửi dữ liệu bao gồm cả file
-        const formData = new FormData();
-        // console.log(postData)
-        formData.append('title', postData.title);
-        formData.append('content', postData.content);
-        formData.append('topic', postData.topic);
-        formData.append('purpose', postData.purpose);
-        formData.append('time', currentTime);
-        if (postData.imageURL) {
-            formData.append('imageURL', postData.imageURL);
-        }
-        if (postData.videoURL) {
-            formData.append('videoURL', postData.videoURL);
-        }
-        console.log(postData)
+
+        const formData = {
+            title: postData.title,
+            content: postData.content,
+            topic: postData.topic,
+            purpose: postData.purpose,
+            time: currentTime
+        };
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:8080/api/add-post', postData, {
+            const response = await axios.post('http://localhost:8080/api/add-post', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
@@ -108,15 +78,11 @@ const CreatePost = () => {
             });
             if (response.status === 200) {
                 alert("Bài viết đã được đăng thành công!");
-                // Đặt lại trạng thái postData để xóa dữ liệu đã nhập sau khi đăng bài thành công
                 setPostData({
                     title: '',
                     content: '',
                     topic: '',
-                    purpose: '',
-                    time: '',
-                    imageURL: null, 
-                    videoURL: null
+                    purpose: ''
                 });
             }
         } catch (error) {
@@ -126,7 +92,7 @@ const CreatePost = () => {
             setIsLoading(false);
         }
     };
-    
+
     return (
         <div className="main-content">
             <div className="navbar">
@@ -171,8 +137,7 @@ const CreatePost = () => {
                         </div>
 
                         <div className="post-upload">
-                            <label htmlFor="file">Đăng tải ảnh hoặc video nếu có:</label>
-                            <input type="file" id="post-file" name="file" accept="image/*, video/*" multiple onChange={handleFileChange}/>
+                            <label>Bạn có thể thêm đường dẫn URL của hình ảnh, video, bài hát,... trong phần nội dung bài viết</label>
                         </div>
 
                         {error && <div className="error">{error}</div>}
@@ -185,7 +150,7 @@ const CreatePost = () => {
             </div>
 
             <div className="right-content">
-                <div className="user-info">
+                <div className="profile-section">
                     <Profile />
                 </div>
 

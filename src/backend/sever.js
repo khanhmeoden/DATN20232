@@ -43,10 +43,8 @@ app.post('/api/login', (req, res) => {
     const query = `
         SELECT 
             users.id, users.username, users.email, users.fullname, users.dob, 
-            users.gender, users.address, users.avatarUrl, users.password,
-            userStats.totalPosts, userStats.totalComments, userStats.totalLikes, userStats.totalUnlikes 
-        FROM users 
-        LEFT JOIN userStats ON users.id = userStats.userID 
+            users.gender, users.address, users.avatarUrl, users.password 
+        FROM users  
         WHERE users.username = ? OR users.email = ?`;
     db.query(query, [usernameOrEmail, usernameOrEmail], (err, result) => {
         if (err) {
@@ -73,10 +71,6 @@ app.post('/api/login', (req, res) => {
                         username: user.username,
                         fullname: user.fullname,
                         avatarUrl: user.avatarUrl,
-                        totalPosts: user.totalPosts,
-                        totalComments: user.totalComments,
-                        totalLikes: user.totalLikes,
-                        totalUnlikes: user.totalUnlikes
                     }
                 });
             } else {
@@ -115,12 +109,18 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
 
     const query = `
         SELECT 
-            users.id, users.username, users.email, users.fullname, users.dob, 
-            users.gender, users.address, users.avatarUrl,
-            userStats.totalPosts, userStats.totalComments, userStats.totalLikes, userStats.totalUnlikes 
-        FROM users 
-        LEFT JOIN userStats ON users.id = userStats.userID 
-        WHERE users.id = ?`;
+            u.id, u.username, u.email, u.fullname, u.dob, 
+            u.gender, u.address, u.avatarUrl,
+            COALESCE(COUNT(DISTINCT p.postID), 0) AS total_posts,
+            COALESCE(COUNT(DISTINCT c.commentID), 0) AS total_comments,
+            COALESCE(SUM(p.likeCount), 0) + COALESCE(SUM(c.likeCount), 0) AS total_likes,
+            COALESCE(SUM(p.unlikeCount), 0) + COALESCE(SUM(c.unlikeCount), 0) AS total_unlikes
+        FROM users u
+        LEFT JOIN posts p ON u.id = p.userID
+        LEFT JOIN comments c ON u.id = c.userID
+        WHERE u.id = ?
+        GROUP BY u.id, u.username, u.email, u.fullname, u.dob, 
+                 u.gender, u.address, u.avatarUrl`;
 
     db.query(query, [userID], (err, result) => {
         if (err) {
@@ -138,10 +138,10 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
                     gender: user.gender,
                     address: user.address,
                     avatarUrl: user.avatarUrl,
-                    totalPosts: user.totalPosts,
-                    totalComments: user.totalComments,
-                    totalLikes: user.totalLikes,
-                    totalUnlikes: user.totalUnlikes
+                    total_posts: user.total_posts,
+                    total_comments: user.total_comments,
+                    total_likes: user.total_likes,
+                    total_unlikes: user.total_unlikes
                 }
             });
         } else {
@@ -172,43 +172,31 @@ app.get('/api/protected-route', authenticateJWT, (req, res) => {
 
 // Endpoint API để thêm bài viết mới
 app.post('/api/add-post', authenticateJWT, (req, res) => {
-    console.log(req.body)
-    const { title, content, topic, purpose, imageURL, videoURL } = req.body;
+    console.log(req.body);
+    const { title, content, topic, purpose} = req.body;
     const userId = req.user.id; // Lấy id của người dùng từ JWT
 
-    // Kiểm tra dữ liệu đầu vào
-    // if (!title || !content || !topic || !purpose) {
-    //     return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin bài viết' });
-    // }
-
-    const query = `INSERT INTO posts (userID, title, content, topic, purpose, datePosted, imageURL, videoURL) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`;
-    db.query(query, [userId, title, content, topic, purpose, imageURL, videoURL], (err, result) => {
+    const query = `INSERT INTO posts (userID, title, content, topic, purpose, datePosted) VALUES (?, ?, ?, ?, ?, NOW())`;
+    db.query(query, [userId, title, content, topic, purpose], (err, result) => {
         if (err) {
             console.error('Lỗi khi thêm bài viết mới:', err);
             return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
         } else {
-            // Update user's totalPosts
-            const updateUserStatsQuery = `UPDATE userStats SET totalPosts = totalPosts + 1 WHERE userID = ?`;
-            db.query(updateUserStatsQuery, [userId], (err) => {
+            // Lấy username và avatarUrl của người dùng
+            const getUserInfoQuery = `SELECT username, avatarUrl FROM users WHERE id = ?`;
+            db.query(getUserInfoQuery, [userId], (err, userResult) => {
                 if (err) {
-                    console.error('Lỗi cập nhật số lượng bài viết:', err);
+                    console.error('Lỗi lấy thông tin người dùng:', err);
                     return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+                } else if (userResult.length === 0) {
+                    return res.status(404).json({ message: 'Không tìm thấy người dùng' });
                 } else {
-                    // Lấy username và avatarUrl của người dùng
-                    const getUserInfoQuery = `SELECT username, avatarUrl FROM users WHERE id = ?`;
-                    db.query(getUserInfoQuery, [userId], (err, userResult) => {
-                        if (err) {
-                            console.error('Lỗi lấy thông tin người dùng:', err);
-                            return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
-                        } else {
-                            const userInfo = userResult[0];
-                            return res.status(200).json({ 
-                                message: 'Bài viết đã được đăng thành công!', 
-                                postId: result.insertId, 
-                                username: userInfo.username, 
-                                avatarUrl: userInfo.avatarUrl 
-                            });
-                        }
+                    const userInfo = userResult[0];
+                    return res.status(200).json({ 
+                        message: 'Bài viết đã được đăng thành công!', 
+                        postId: result.insertId, 
+                        username: userInfo.username, 
+                        avatarUrl: userInfo.avatarUrl 
                     });
                 }
             });

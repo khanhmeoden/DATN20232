@@ -17,7 +17,11 @@ const UserInfo = () => {
         dob: '',
         gender: '',
         address: '',
-        avatarUrl: ''
+        avatarUrl: '',
+        totalPosts: 0,
+        totalComments: 0,
+        totalLikes: 0,
+        totalUnlikes: 0
     });
     const [avatarFile, setAvatarFile] = useState(null);
 
@@ -39,7 +43,11 @@ const UserInfo = () => {
                         dob: response.data.user.dob,
                         gender: response.data.user.gender,
                         address: response.data.user.address,
-                        avatarUrl: response.data.user.avatarUrl
+                        avatarUrl: response.data.user.avatarUrl,
+                        totalPosts: response.data.user.total_posts,
+                        totalComments: response.data.user.total_comments,
+                        totalLikes: response.data.user.total_likes,
+                        totalUnlikes: response.data.user.total_unlikes
                     });
                 } catch (error) {
                     console.error('Lỗi khi lấy thông tin người dùng:', error);
@@ -146,10 +154,10 @@ const UserInfo = () => {
                     {activeTab === 'stats' && user && (
                         <div className="user-stats">
                             <h2>Thống kê</h2>
-                            <p><strong>Tổng số bài viết:</strong> {user.totalPosts}</p>
-                            <p><strong>Tổng số bình luận:</strong> {user.totalComments}</p>
-                            <p><strong>Tổng số lượt thích:</strong> {user.totalLikes}</p>
-                            <p><strong>Tổng số lượt không thích:</strong> {user.totalUnlikes}</p>
+                            <p><strong>Tổng số bài viết:</strong> {formData.totalPosts}</p>
+                            <p><strong>Tổng số bình luận:</strong> {formData.totalComments}</p>
+                            <p><strong>Tổng số lượt thích:</strong> {formData.totalLikes}</p>
+                            <p><strong>Tổng số lượt không thích:</strong> {formData.totalUnlikes}</p>
                         </div>
                     )}
                     {activeTab === 'edit' && (
@@ -174,9 +182,9 @@ const UserInfo = () => {
                             <div className="form-group">
                                 <label>Giới tính:</label>
                                 <select name="gender" value={formData.gender} onChange={handleChange} required>
-                                    <option value="Male">Nam</option>
-                                    <option value="Female">Nữ</option>
-                                    <option value="Other">Khác</option>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
                                 </select>
                             </div>
                             <div className="form-group">
