@@ -265,7 +265,7 @@ const UserInfo = () => {
                                             <td className="title-column">{post.title}</td>
                                             <td className="topic-column">{post.topic}</td>
                                             <td className="purpose-column">{post.purpose}</td>
-                                            <td className="likes-column">{post.likeCount}/{post.unlikeCount}</td>
+                                            <td className="likes-column">{post.likeCount} / {post.unlikeCount}</td>
                                             <td className="comments-column">{post.commentCount}</td>
                                             <td className="date-column">{formatDate(post.datePosted)}</td>
                                             <td className="delete-column">

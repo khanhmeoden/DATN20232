@@ -250,16 +250,16 @@ app.post('/api/add-post', authenticateJWT, (req, res) => {
     });
 });
 
-// Bài viết gần nhất
+// Bài viết gần đây
 app.get('/api/recent-posts', (req, res) => {
     // Lấy thời gian hiện tại của yêu cầu
     const requestTime = new Date();
 
     const query = `SELECT username, avatarUrl, title, topic, purpose, likeCount, datePosted 
-                FROM posts 
-                JOIN users ON posts.userID = users.id 
-                ORDER BY datePosted DESC 
-                LIMIT 10`;
+                   FROM posts 
+                   JOIN users ON posts.userID = users.id 
+                   ORDER BY datePosted DESC 
+                   LIMIT 10`;
 
     db.query(query, (err, results) => {
         if (err) {

@@ -54,50 +54,149 @@ span.cat-name {
     margin-right: 10px;
 }
 
-.recent-post-header {
-    background-color: rgb(104, 193, 163);
-    font-size: 14px;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-end;
-    width: 100%;
-    max-height: 44px;
+.author-info img {
+    border-radius: 100px;
+    width: 50px;
 }
 
-.recent-post-header .recent-post-box {
+.recent-post-table {
+    border-collapse: collapse;
+}
+
+.recent-post-table-row-username-avatar,
+.recent-post-table-row-title,
+.recent-post-table-row-topic,
+.recent-post-table-row-purpose,
+.recent-post-table-row-likes,
+.recent-post-table-row-date-posted {
+    padding: 8px;
+    border-right: 1px solid #ddd;
+}
+
+.recent-post-table-row-username-avatar:last-child,
+.recent-post-table-row-title:last-child,
+.recent-post-table-row-topic:last-child,
+.recent-post-table-row-purpose:last-child,
+.recent-post-table-row-likes:last-child,
+.recent-post-table-row-date-posted:last-child {
+    border-right: none; 
+}
+
+.recent-post-table-header-title {
+    width: 285px;
+}
+
+.recent-post-table-header-purpose {
+    width: 200px;
+}
+
+.recent-post-table th, .recent-post-table td {
+    padding: 8px;
+    text-align: center;
+}
+
+.recent-post-table th {
+    background-color: #07e78d;
+    line-height: 40px;
     color: white;
-    float: left;
-    font-size: 16px;
-    padding: 7px;
-    text-align: center !important;
-    border-right: 0.1px solid white;
+    font-family: "Lato", sans-serif;
+    font-weight: normal;
+    font-size: 18px;
 }
 
-.recent-post-box.author {
-    width: 12%;
+.recent-post-table tbody {
+    background-color: lightgoldenrodyellow;
+    font-size: 15px;
 }
 
-.recent-post-box.title {
-    width: 33%;
+/* Màu sắc cho chữ của từng chủ đề */
+.topic-abuse {
+    color: #00c62b;
 }
 
-.recent-post-box.topic {
-    width: 22%;
+.topic-stress {
+    color: #a041e4;
 }
 
-.recent-post-box.purpose {
-    width: 22%;
+.topic-depression {
+    color: #096efb;
 }
 
-.recent-post-box.like {
-    width: 7%;
+.topic-grief {
+    color: #26713c;
 }
 
-.recent-post-box.time {
-    width: 160px;
-    border-right: none;
+.topic-relationships {
+    color: #faf60e;
 }
 
+.topic-dating {
+    color: red;
+}
+
+.topic-finance {
+    color: green;
+}
+
+.topic-children {
+    color: orange;
+}
+
+.topic-school {
+    color: rgb(109, 0, 252);
+}
+
+.topic-suicide {
+    color: rgb(112, 112, 112);
+}
+
+.topic-lgbt {
+    color: rgb(255, 0, 132);
+}
+
+.topic-nutrition {
+    color: rgb(230, 192, 55);
+}
+
+.topic-health {
+    color: rgb(246, 92, 112);
+}
+
+.topic-other {
+    color: rgb(66, 215, 252);
+}
+
+/* Màu sắc cho chữ của từng mục đích */
+.purpose-need-advice {
+    color: red;
+}
+
+.purpose-give-advice {
+    color: green;
+}
+
+.purpose-share {
+    color: rgb(152, 6, 152);
+}
+
+.purpose-chat {
+    color: rgb(0, 17, 255);
+}
+
+.recent-post-table-row-username-avatar p {
+    color: blue;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+}
+
+.recent-post-table-row-likes {
+    color: rgb(21, 255, 0);
+}
+
+.recent-post-table-row-date-posted {
+    color: orange;
+}
+
+.recent-post-table-row-username-avatar img {
+    cursor: pointer;
+}
