@@ -178,6 +178,10 @@ td.search-result-table-row-purpose.purpose-share {
     width: 155px;
 }
 
+td.search-result-table-row-purpose.purpose-need-advice {
+    width: 155px;
+}
+
 td.search-result-table-row.snippet {
     font-size: 17px;
     padding-bottom: 30px;

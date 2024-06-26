@@ -16,3 +16,88 @@
     font-family: "Lato", sans-serif;
     line-height: 50px;
 }
+
+.purpose-posts-table {
+    border-collapse: collapse;
+}
+
+.purpose-posts-table-author,
+.purpose-posts-table-title,
+.purpose-posts-table-topic,
+.purpose-posts-table-likes,
+.purpose-posts-table-comment,
+.purpose-posts-table-date-posted {
+    border-right: 3px solid white;
+}
+
+.purpose-posts-table-date-posted:last-child {
+    border-right: none; 
+}
+
+.purpose-posts-table-row-author,
+.purpose-posts-table-row-title,
+.purpose-posts-table-row-topic,
+.purpose-posts-table-row-likes,
+.purpose-posts-table-row-comment,
+.purpose-posts-table-row-date-posted {
+    border-right: 3px solid white;
+}
+
+.purpose-posts-table-row-comment {
+    color: rgb(0, 225, 255);
+}
+
+.purpose-posts-table-row-date-posted {
+    color: orange;
+}
+
+.purpose-posts-table-row-date-posted:last-child {
+    border-right: none; 
+}
+
+.purpose-posts-table-header-title {
+    width: 285px;
+}
+
+.purpose-posts-table-header-purpose {
+    width: 200px;
+}
+
+.purpose-posts-table th, .purpose-posts-table td {
+    padding: 8px;
+    text-align: center;
+}
+
+.purpose1-table-heading {
+    background-color: rgb(255, 43, 43);
+    line-height: 40px;
+    color: white;
+    font-size: 20px;
+}
+
+.purpose1-table-body {
+    background-color: #ffd5d5;
+    font-size: 15px;
+}
+
+.purpose1-table-body td {
+    font-size: 17px;
+    font-weight: normal;
+    font-family: "Lato", sans-serif;
+}
+
+th.purpose-posts-table-title {
+    width: 250px;
+}
+
+th.purpose-posts-table-topic {
+    width: 265px;
+}
+
+.purpose-posts-table-row-likes .like-count {
+    color: rgb(0, 255, 0); 
+}
+
+.purpose-posts-table-row-likes .unlike-count {
+    color: red; 
+}

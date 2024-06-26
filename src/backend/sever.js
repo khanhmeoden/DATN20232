@@ -304,6 +304,116 @@ app.get('/search', (req, res) => {
     });
 });
 
+
+// Mục đích bài viết
+app.get('/can-loi-khuyen', (req, res) => {
+    const purpose = 'Cần lời khuyên';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.topic, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.purpose = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [purpose], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/dua-loi-khuyen', (req, res) => {
+    const purpose = 'Đưa lời khuyên';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.topic, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.purpose = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [purpose], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+
+app.get('/tam-su-va-chia-se', (req, res) => {
+    const purpose = 'Tâm sự và chia sẻ';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.topic, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.purpose = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [purpose], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/cau-chuyen-thuong-ngay', (req, res) => {
+    const purpose = 'Câu chuyện thường ngày & Tán gẫu';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.topic, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.purpose = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [purpose], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });

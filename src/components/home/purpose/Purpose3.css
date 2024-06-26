@@ -10,9 +10,27 @@
 }
 
 #purpose3-title {
-    color: rgb(152, 6, 152);
+    color: rgb(193, 4, 193);
     font-size: 20px;
     font-weight: bold;
     font-family: "Lato", sans-serif;
     line-height: 50px;
+}
+
+.purpose3-table-heading {
+    background-color: rgb(183, 0, 183);
+    line-height: 40px;
+    color: white;
+    font-size: 20px;
+}
+
+.purpose3-table-body {
+    background-color: rgb(249, 221, 249);
+    font-size: 15px;
+}
+
+.purpose3-table-body td {
+    font-size: 17px;
+    font-weight: normal;
+    font-family: "Lato", sans-serif;
 }

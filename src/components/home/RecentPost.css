@@ -183,7 +183,7 @@ span.cat-name {
     color: rgb(0, 17, 255);
 }
 
-.recent-post-table-row-username-avatar p {
+.author-info p {
     color: blue;
     font-weight: bold;
     font-family: "Lato", sans-serif;

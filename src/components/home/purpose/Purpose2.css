@@ -16,3 +16,21 @@
     font-family: "Lato", sans-serif;
     line-height: 50px;
 }
+
+.purpose2-table-heading {
+    background-color: rgb(0, 200, 0);
+    line-height: 40px;
+    color: white;
+    font-size: 20px;
+}
+
+.purpose2-table-body {
+    background-color: rgb(201, 240, 201);
+    font-size: 15px;
+}
+
+.purpose2-table-body td {
+    font-size: 17px;
+    font-weight: normal;
+    font-family: "Lato", sans-serif;
+}
