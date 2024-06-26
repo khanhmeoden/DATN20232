@@ -127,7 +127,7 @@ span.cat-name {
 }
 
 .topic-relationships {
-    color: #faf60e;
+    color: #dbd80f;
 }
 
 .topic-dating {
@@ -199,4 +199,12 @@ span.cat-name {
 
 .recent-post-table-row-username-avatar img {
     cursor: pointer;
+}
+
+th.recent-post-table-header-topic {
+    width: 260px;
+}
+
+th.recent-post-table-header-title {
+    width: 315px;
 }

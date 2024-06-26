@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import './Search.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
-import SearchResult from './SearchResult'; // Import component SearchResult
+import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleInputChange = (event) => {
         setSearchTerm(event.target.value);
@@ -16,22 +14,20 @@ const Search = () => {
 
     const handleSearch = () => {
         if (!searchTerm) {
-            setError('Vui lòng nhập từ khóa tìm kiếm');
+            alert('Vui lòng nhập từ khóa tìm kiếm');
             return;
         }
-
-        // Gửi yêu cầu tìm kiếm đến API server
-        axios.get(`http://localhost:8080/search?keyword=${encodeURIComponent(searchTerm)}`)
-            .then(response => {
-                setSearchResults(response.data);
-                setError(null);
-            })
-            .catch(error => {
-                console.error('Lỗi khi tìm kiếm:', error);
-                setError('Đã xảy ra lỗi khi tìm kiếm');
-            });
+        // Điều hướng đến trang kết quả tìm kiếm với state
+        navigate('/search-results', { state: { keyword: searchTerm } });
     };
-    
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            handleSearch();
+        }
+    };
+
     return (
         <div>
             <h3 className="search-title">Tìm kiếm</h3>
@@ -45,16 +41,13 @@ const Search = () => {
                         className="search-input" 
                         value={searchTerm} 
                         onChange={handleInputChange} 
+                        onKeyDown={handleKeyDown} 
                         required 
                     />
                 </label>
                 </form>
                 <button type="button" onClick={handleSearch} className="search-button"><FontAwesomeIcon icon={faSearch}/></button>
             </div>
-            {error && <p className="error-message">{error}</p>}
-            {searchResults.length > 0 && (
-                <SearchResult searchResults={searchResults} keyword={searchTerm} />
-            )}
         </div>
     );
 };

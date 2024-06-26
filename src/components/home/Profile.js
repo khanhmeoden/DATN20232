@@ -5,7 +5,6 @@ import './Profile.css';
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -26,15 +25,11 @@ const Profile = () => {
           setUser(data.user);
         } else {
           if (response.status === 401) {
-            setError('Token không hợp lệ, vui lòng đăng nhập lại.');
             window.location.href = '/login';
-          } else {
-            setError(data.message || 'Failed to fetch user info');
-          }
+          } 
           console.error('Error response:', data);
         }
       } catch (error) {
-        setError(error.message);
         console.error('Fetch error:', error);
       } finally {
         setLoading(false);
@@ -48,12 +43,8 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   if (!user) {
-    return <div>No user data found</div>;
+    return <div className='guest'>Bạn đang sử dụng website với vai trò Khách</div>;
   }
 
   return (

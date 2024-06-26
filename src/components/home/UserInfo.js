@@ -178,7 +178,7 @@ const UserInfo = () => {
                 </div>
 
                 <div className="tabs">
-                    <button className={activeTab === 'info' ? 'active' : ''} onClick={() => setActiveTab('info')}>Thông tin người dùng</button>
+                    <button className={activeTab === 'info' ? 'active' : ''} onClick={() => setActiveTab('info')}>Thông tin cá nhân</button>
                     <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>Thống kê</button>
                     <button className={activeTab === 'edit' ? 'active' : ''} onClick={() => setActiveTab('edit')}>Chỉnh sửa thông tin</button>
                     <button className={activeTab === 'posts' ? 'active' : ''} onClick={() => setActiveTab('posts')}>Bài viết</button>
@@ -187,7 +187,7 @@ const UserInfo = () => {
                 <div className="tab-content">
                     {activeTab === 'info' && user && (
                         <div className="user-info">
-                            <h2>Thông tin người dùng</h2>
+                            <h2>Thông tin cá nhân</h2>
                             <p><strong>Email:</strong> {user.email}</p>
                             <p><strong>Họ tên đầy đủ:</strong> {user.fullname}</p>
                             <p><strong>Ngày sinh:</strong> {formatDate(user.dob)}</p>
@@ -287,7 +287,7 @@ const UserInfo = () => {
                 <div className="search-section">
                     <Search />
                 </div>
-                <div className="recent-activity-section">
+                <div className="recent-activity">
                     <RecentActivity />
                 </div>
             </div>

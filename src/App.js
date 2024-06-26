@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomeLogged from './components/home/HomeLogged';
 import CreatePost from './components/home/CreatePost';
 import UserInfo from './components/home/UserInfo';
+import SearchResult from './components/home/SearchResult';
 
 import Topic1 from './components/home/topic/Topic1';
 import Topic2 from './components/home/topic/Topic2';
@@ -35,6 +36,7 @@ function App() {
         <Route path='home' element={<HomeLogged />}></Route>
         <Route path='create-post' element={<CreatePost />}></Route>
         <Route path='user-info' element={<UserInfo />}></Route>
+        <Route path="/search-results" element={<SearchResult />} />
 
 
         {/* Chủ đề bài viết */}

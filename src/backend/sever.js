@@ -275,31 +275,34 @@ app.get('/api/recent-posts', (req, res) => {
 
 // API endpoint để tìm kiếm bài viết theo từ khoá
 app.get('/search', (req, res) => {
-    let keyword = req.query.keyword;
-  
-    if (!keyword || typeof keyword !== 'string') {
-      return res.status(400).json({ error: 'Thiếu hoặc không hợp lệ từ khóa tìm kiếm' });
+    const keyword = req.query.keyword;
+
+    if (!keyword) {
+        return res.status(400).json({ message: 'Vui lòng cung cấp từ khóa tìm kiếm' });
     }
-  
-    // Mã hóa từ khóa trước khi sử dụng
-    keyword = encodeURIComponent(keyword);
-  
+
+    const searchPattern = `%${keyword}%`;
     const query = `
-      SELECT users.username, users.avatarUrl, posts.title, posts.topic, posts.purpose, 
-      posts.datePosted, posts.likeCount, posts.unlikeCount
-      FROM posts
-      JOIN users ON posts.userID = users.id
-      WHERE posts.content LIKE '%${keyword}%'
-    `;
-  
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error('Lỗi truy vấn cơ sở dữ liệu:', err);
-        return res.status(500).json({ error: 'Đã xảy ra lỗi' });
-      }
-      res.json(results);
+        SELECT 
+            p.postID, p.title, p.purpose, p.topic, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments,
+            SUBSTRING_INDEX(SUBSTRING_INDEX(p.content, ?, -10), ?, 10) AS snippet_before,
+            SUBSTRING_INDEX(SUBSTRING_INDEX(p.content, ?, 10), ?, -10) AS snippet_after
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.title LIKE ? OR p.content LIKE ?
+        LIMIT 20`;
+
+    db.query(query, [keyword, ' ', keyword, ' ', searchPattern, searchPattern], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
     });
-}); 
+});
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

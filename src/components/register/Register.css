@@ -173,11 +173,11 @@ button[type="submit"]:active {
 }
 
 .avatar-preview {
-    width: 150px;
-    height: 150px;
+    width: 125px;
     border-radius: 50%; 
     overflow: hidden; 
     margin-top: 20px;
+    margin-left: 60px;
 }
   
 .avatar-image {
