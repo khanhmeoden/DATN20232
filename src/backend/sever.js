@@ -103,13 +103,18 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
+// Sử dụng middleware cho các route cần bảo vệ
+app.get('/api/protected-route', authenticateJWT, (req, res) => {
+    res.status(200).json({ message: 'Bạn đã truy cập thành công vào route bảo vệ !', user: req.user });
+});
+
 // Endpoint để lấy thông tin người dùng
 app.get('/api/user-info', authenticateJWT, (req, res) => {
     const userID = req.user.id;
 
     const query = `
         SELECT 
-            u.id, u.username, u.email, u.password, u.fullname, u.dob, 
+            u.id, u.username, u.email, u.fullname, u.dob, 
             u.gender, u.address, u.avatarUrl,
             COALESCE(COUNT(DISTINCT p.postID), 0) AS total_posts,
             COALESCE(COUNT(DISTINCT c.commentID), 0) AS total_comments,
@@ -119,7 +124,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
         LEFT JOIN posts p ON u.id = p.userID
         LEFT JOIN comments c ON u.id = c.userID
         WHERE u.id = ?
-        GROUP BY u.id, u.username, u.email, u.password, u.fullname, u.dob, 
+        GROUP BY u.id, u.username, u.email, u.fullname, u.dob, 
                  u.gender, u.address, u.avatarUrl`;
 
     db.query(query, [userID], (err, result) => {
@@ -134,7 +139,6 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
                     id: user.id,
                     username: user.username,
                     email: user.email,
-                    password: user.password,
                     fullname: user.fullname,
                     dob: user.dob,
                     gender: user.gender,
@@ -154,16 +158,16 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
 
 // Endpoint cập nhật thông tin người dùng
 app.put('/api/update-user', authenticateJWT, (req, res) => {
-    const { username, email, password, fullname, dob, gender, address, avatarUrl } = req.body;
+    const { username, email, fullname, dob, gender, address, avatarUrl } = req.body;
     const userId = req.user.id;
 
-    const query = `UPDATE users SET username = ?, email = ?, password = ?, fullname = ?, dob = ?, gender = ?, address = ?, avatarUrl = ? WHERE id = ?`;
-    db.query(query, [username, email, password, fullname, dob, gender, address, avatarUrl, userId], (err, result) => {
+    const query = `UPDATE users SET username = ?, email = ?, fullname = ?, dob = ?, gender = ?, address = ?, avatarUrl = ? WHERE id = ?`;
+    db.query(query, [username, email, fullname, dob, gender, address, avatarUrl, userId], (err, result) => {
         if (err) {
             console.error('Lỗi khi cập nhật thông tin người dùng:', err);
             return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
         }
-        res.status(200).json({ message: 'Cập nhật thông tin thành công!', user: { username, email, password, fullname, dob, gender, address, avatarUrl } });
+        res.status(200).json({ message: 'Cập nhật thông tin thành công!', user: { username, email, fullname, dob, gender, address, avatarUrl } });
     });
 });
 
@@ -187,34 +191,6 @@ app.get('/api/user-posts', authenticateJWT, (req, res) => {
             res.status(200).json(results);
         }
     });
-});
-
-// Endpoint để xóa bài viết
-app.delete('/api/posts/:postId', authenticateJWT, (req, res) => {
-    const { postId } = req.params;
-    const userID = req.user.id;
-
-    const query = `
-        DELETE FROM posts 
-        WHERE postID = ? AND userID = ?`;
-
-    db.query(query, [postId, userID], (err, result) => {
-        if (err) {
-            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
-            return res.status(500).json('Lỗi máy chủ nội bộ');
-        }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json('Không tìm thấy bài viết của bạn');
-        }
-        res.status(200).json('Xoá bài viết thành công');
-    });
-});
-
-
-// Sử dụng middleware cho các route cần bảo vệ
-app.get('/api/protected-route', authenticateJWT, (req, res) => {
-    res.status(200).json({ message: 'Bạn đã truy cập thành công vào route bảo vệ !', user: req.user });
 });
 
 // Endpoint API để thêm bài viết mới

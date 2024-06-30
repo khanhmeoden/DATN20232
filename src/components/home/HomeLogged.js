@@ -5,7 +5,6 @@ import Topic from "./Topic.js";
 import Purpose from "./Purpose.js";
 import Search from "./Search.js";
 import RecentPost from "./RecentPost.js";
-import RecentActivity from "./RecentActivity.js";
 import Profile from "./Profile.js";
 
 const HomeLogged = () => {
@@ -34,9 +33,6 @@ const HomeLogged = () => {
                 </div>
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div> 
         </div>            

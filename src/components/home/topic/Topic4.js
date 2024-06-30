@@ -3,7 +3,6 @@ import './Topic4.css';
 import NavBar from "../NavBar";
 import Profile from "../Profile";
 import Search from "../Search";
-import RecentActivity from "../RecentActivity";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
@@ -92,9 +91,6 @@ const Topic4 = () => {
                 </div>
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div> 
         </div>            

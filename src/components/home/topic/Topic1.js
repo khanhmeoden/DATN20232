@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import './Topic1.css';
 import NavBar from "../NavBar";
 import Search from "../Search";
-import RecentActivity from "../RecentActivity";
 import Profile from "../Profile";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
@@ -92,9 +91,6 @@ const Topic1 = () => {
                 </div>
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div> 
         </div>            

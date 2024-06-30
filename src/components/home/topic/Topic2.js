@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import './Topic2.css';
 import NavBar from "../NavBar";
 import Search from "../Search";
-import RecentActivity from "../RecentActivity";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFaceTired } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
@@ -87,9 +86,6 @@ const Topic2 = () => {
             <div className="right-content">
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div> 
         </div>            

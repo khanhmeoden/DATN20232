@@ -4,10 +4,7 @@ import './UserInfo.css';
 import NavBar from "./NavBar";
 import Profile from "./Profile";
 import Search from "./Search";
-import RecentActivity from "./RecentActivity";
 import unknown_user from "../../asset/unknown-user.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const UserInfo = () => {
     const [user, setUser] = useState(null);
@@ -15,7 +12,6 @@ const UserInfo = () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        password: '',
         fullname: '',
         dob: '',
         gender: '',
@@ -25,17 +21,13 @@ const UserInfo = () => {
         totalComments: 0,
         totalLikes: 0,
         totalUnlikes: 0,
-        currentPassword: '',
-        newPassword: ''
     });
     const [avatarFile, setAvatarFile] = useState(null);
     const [posts, setPosts] = useState([]);
-    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            const token = localStorage.getItem('token'); // Giả sử token được lưu trong localStorage
+            const token = localStorage.getItem('token');
             if (token) {
                 try {
                     const response = await axios.get('http://localhost:8080/api/user-info', {
@@ -43,7 +35,6 @@ const UserInfo = () => {
                             Authorization: `Bearer ${token}`
                         }
                     });
-                    console.log(response.data)
                     setUser(response.data.user);
                     setFormData({
                         username: response.data.user.username,
@@ -57,8 +48,6 @@ const UserInfo = () => {
                         totalComments: response.data.user.total_comments,
                         totalLikes: response.data.user.total_likes,
                         totalUnlikes: response.data.user.total_unlikes,
-                        currentPassword: response.data.user.password,
-                        newPassword: ''
                     });
                 } catch (error) {
                     console.error('Lỗi khi lấy thông tin người dùng:', error);
@@ -111,7 +100,6 @@ const UserInfo = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         const updatedData = { ...formData };
-        console.log(updatedData);
 
         if (avatarFile) {
             const formData = new FormData();
@@ -145,28 +133,6 @@ const UserInfo = () => {
         } catch (error) {
             console.error('Lỗi khi cập nhật thông tin người dùng:', error);
             alert('Username hoặc email đã tồn tại.');
-        }
-    };
-
-    const handleDeletePost = async (postID) => {
-        if (window.confirm('Bạn có chắc chắn muốn xoá bài viết này không?')) {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const response = await axios.delete(`http://localhost:8080/api/posts/${postID}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    if (response.status === 200) {
-                        alert('Xoá bài viết thành công!');
-                        setPosts(posts.filter(post => post.post_id !== postID));
-                    }
-                } catch (error) {
-                    console.error('Lỗi khi xoá bài viết:', error);
-                    alert('Có lỗi xảy ra khi xoá bài viết.');
-                }
-            }
         }
     };
 
@@ -218,23 +184,23 @@ const UserInfo = () => {
                             <h2>Chỉnh sửa thông tin người dùng</h2>
                             <div className="form-group">
                                 <label>Tên đăng nhập:</label>
-                                <input type="text" name="username" value={formData.username} onChange={handleChange}  />
+                                <input type="text" name="username" value={formData.username} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Email:</label>
-                                <input type="email" name="email" value={formData.email} onChange={handleChange}  />
+                                <input type="email" name="email" value={formData.email} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Họ tên đầy đủ:</label>
-                                <input type="text" name="fullname" value={formData.fullname} onChange={handleChange}  />
+                                <input type="text" name="fullname" value={formData.fullname} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Ngày sinh:</label>
-                                <input type="date" name="dob" value={formData.dob} onChange={handleChange}  />
+                                <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Giới tính:</label>
-                                <select name="gender" value={formData.gender} onChange={handleChange} >
+                                <select name="gender" value={formData.gender} onChange={handleChange}>
                                     <option value="Nam">Nam</option>
                                     <option value="Nữ">Nữ</option>
                                     <option value="Khác">Khác</option>
@@ -242,47 +208,11 @@ const UserInfo = () => {
                             </div>
                             <div className="form-group">
                                 <label>Địa chỉ:</label>
-                                <input type="text" name="address" value={formData.address} onChange={handleChange}  />
+                                <input type="text" name="address" value={formData.address} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Avatar:</label>
                                 <input type="file" accept="image/*" onChange={handleAvatarChange} />
-                            </div>
-                            <div className="form-group">
-                                <label>Mật khẩu hiện tại:</label>
-                                <div className="password-input-wrapper">
-                                    <input 
-                                        type={showCurrentPassword ? "text" : "password"} 
-                                        name="currentPassword" 
-                                        value={formData.currentPassword} 
-                                        onChange={handleChange} 
-                                    />
-                                    <button 
-                                        type="button" 
-                                        className="password-toggle" 
-                                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                    >
-                                        <FontAwesomeIcon icon={showCurrentPassword ? faEyeSlash : faEye} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Mật khẩu mới:</label>
-                                <div className="password-input-wrapper">
-                                    <input 
-                                        type={showNewPassword ? "text" : "password"} 
-                                        name="newPassword" 
-                                        value={formData.newPassword} 
-                                        onChange={handleChange} 
-                                    />
-                                    <button 
-                                        type="button" 
-                                        className="password-toggle" 
-                                        onClick={() => setShowNewPassword(!showNewPassword)}
-                                    >
-                                        <FontAwesomeIcon icon={showNewPassword ? faEyeSlash : faEye} />
-                                    </button>
-                                </div>
                             </div>
                             <button type="submit">Lưu thay đổi</button>
                         </form>
@@ -297,10 +227,9 @@ const UserInfo = () => {
                                         <th className="title-column">Tiêu đề bài viết</th>
                                         <th className="topic-column">Chủ đề bài viết</th>
                                         <th className="purpose-column">Mục đích bài viết</th>
-                                        <th className="likes-column">Số lượt thích/Không thích</th>
+                                        <th className="likes-column">Số lượt thích / Không thích</th>
                                         <th className="comments-column">Số lượt bình luận</th>
                                         <th className="date-column">Thời gian đăng tải</th>
-                                        <th className="delete-column">Xoá bài</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -313,9 +242,6 @@ const UserInfo = () => {
                                             <td className="likes-column">{post.likeCount} / {post.unlikeCount}</td>
                                             <td className="comments-column">{post.commentCount}</td>
                                             <td className="date-column">{formatDate(post.datePosted)}</td>
-                                            <td className="delete-column">
-                                                <div onClick={() => handleDeletePost(post.post_id)}><FontAwesomeIcon icon={faTrash}/></div>
-                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -331,9 +257,6 @@ const UserInfo = () => {
                 </div>
                 <div className="search-section">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div>
         </div>

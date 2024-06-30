@@ -3,7 +3,6 @@ import './Purpose1.css';
 import NavBar from "../NavBar";
 import Profile from "../Profile";
 import Search from "../Search";
-import RecentActivity from "../RecentActivity";
 import axios from 'axios';
 import defaultAvatar from '../../../asset/unknown-user.jpg';
 
@@ -99,9 +98,6 @@ const Purpose1 = () => {
                 </div>
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div>
         </div>

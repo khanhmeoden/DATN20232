@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import './CreatePost.css';
 import Search from "./Search";
-import RecentActivity from "./RecentActivity";
 import NavBar from "./NavBar";
 import axios from "axios";
 import Profile from "./Profile";
@@ -87,7 +86,7 @@ const CreatePost = () => {
             };
         } catch (error) {
             console.error('Lỗi khi đăng bài viết:', error);
-            setError("Tiêu đề bài viết đã tồn tại, bạn hãy nhập tiêu đề mới !");
+            setError("Tiêu đề bài viết đã tồn tại, bạn hãy nhập tiêu đề mới s!");
         } finally {
             setIsLoading(false);
         }
@@ -156,9 +155,6 @@ const CreatePost = () => {
 
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div>
         </div>

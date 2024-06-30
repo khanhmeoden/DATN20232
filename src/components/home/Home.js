@@ -5,7 +5,6 @@ import Purpose from "./Purpose.js";
 import Profile from "./Profile.js";
 import Search from "./Search.js";
 import RecentPost from "./RecentPost.js";
-import RecentActivity from "./RecentActivity.js";
 import NavBar from "./NavBar.js";
 
 const Home = () => {
@@ -34,9 +33,6 @@ const Home = () => {
                 </div>
                 <div className="search">
                     <Search />
-                </div>
-                <div className="recent-activity">
-                    <RecentActivity />
                 </div>
             </div> 
         </div>            
