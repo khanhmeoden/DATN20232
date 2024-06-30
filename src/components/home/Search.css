@@ -3,6 +3,10 @@
     src: url(../../asset/Lato-Medium_0.ttf);
 }
 
+.search {
+    margin-top: 30px;
+}
+
 .search-title {
     padding: 20px 0 15px 0;
     margin-bottom: 5px;

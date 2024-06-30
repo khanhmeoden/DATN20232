@@ -11,21 +11,19 @@ CREATE TABLE users (
     dob DATE NOT NULL,
     gender ENUM('Nam', 'Nữ', 'Khác') NOT NULL,
     address TEXT, 
-    avatarUrl VARCHAR(255)
+    avatarUrl LONGBLOB
 );
 
 CREATE TABLE posts (
-    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    postID INT AUTO_INCREMENT PRIMARY KEY,
     userID INT,
-    title NVARCHAR(255),
+    title VARCHAR(255) UNIQUE,
     content TEXT,
-    topic NVARCHAR(255),
-    purpose TEXT,
+    topic VARCHAR(255),
+    purpose VARCHAR(255),
     datePosted DATETIME,
     likeCount INT DEFAULT 0,
     unlikeCount INT DEFAULT 0,
-    imageURL VARCHAR(255) NULL,
-    videoURL VARCHAR(255) NULL,
     FOREIGN KEY (userID) REFERENCES users(id)
 ) CHARACTER SET utf8mb4;
 
@@ -36,18 +34,10 @@ CREATE TABLE comments (
     content TEXT,
     dateCommented DATETIME,
     likeCount INT DEFAULT 0,
+    unlikeCount INT DEFAULT 0,
     FOREIGN KEY (postID) REFERENCES posts(postID),
     FOREIGN KEY (userID) REFERENCES users(id)
 ) CHARACTER SET utf8mb4;
-
-CREATE TABLE userStats (
-    userID INT PRIMARY KEY,
-    totalPosts INT DEFAULT 0,
-    totalComments INT DEFAULT 0,
-    totalLikes INT DEFAULT 0,
-    totalUnlikes INT DEFAULT 0,
-    FOREIGN KEY (userID) REFERENCES users(id)
-);
 
 CREATE TABLE messages (
     messageID INT AUTO_INCREMENT PRIMARY KEY,

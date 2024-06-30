@@ -23,3 +23,98 @@
     font-family: "Lato", sans-serif;
     line-height: 50px;
 }
+
+.purpose-need-advice {
+    color: red;
+}
+
+.purpose-give-advice {
+    color: green;
+}
+
+.purpose-share {
+    color: rgb(152, 6, 152);
+}
+
+.purpose-chat {
+    color: rgb(0, 17, 255);
+}
+
+.topic-posts-table {
+    border-collapse: collapse;
+}
+
+.topic-posts-table-author,
+.topic-posts-table-title,
+.topic-posts-table-purpose,
+.topic-posts-table-likes,
+.topic-posts-table-comment,
+.topic-posts-table-date-posted {
+    border-right: 3px solid white;
+}
+
+.topic-posts-table-date-posted:last-child {
+    border-right: none; 
+}
+
+.topic-posts-table-row-author,
+.topic-posts-table-row-title,
+.topic-posts-table-row-topic,
+.topic-posts-table-row-likes,
+.topic-posts-table-row-comment,
+.topic-posts-table-row-date-posted {
+    border-right: 3px solid white;
+}
+
+.topic-posts-table-row-comment {
+    color: rgb(0, 225, 255);
+}
+
+.topic-posts-table-row-date-posted {
+    color: orange;
+}
+
+.topic-posts-table-row-date-posted:last-child {
+    border-right: none; 
+}
+
+.topic-posts-table th, .topic-posts-table td {
+    padding: 8px;
+    text-align: center;
+    font-family: "Lato", sans-serif;
+}
+
+.topic-table-heading {
+    background-color: rgb(0, 208, 255);
+    line-height: 40px;
+    color: white;
+    font-size: 20px;
+    font-family: "Lato", sans-serif;
+}
+
+.topic-table-body {
+    background-color: #eeeeee;
+    font-size: 15px;
+}
+
+.topic-table-body td {
+    font-size: 17px;
+    font-weight: normal;
+    font-family: "Lato", sans-serif;
+}
+
+th.topic-posts-table-title {
+    width: 333px;
+}
+
+th.topic-posts-table-purpose {
+    width: 200px;
+}
+
+.topic-posts-table-row-likes .like-count {
+    color: rgb(0, 255, 0); 
+}
+
+.topic-posts-table-row-likes .unlike-count {
+    color: red; 
+}

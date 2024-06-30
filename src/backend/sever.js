@@ -109,7 +109,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
 
     const query = `
         SELECT 
-            u.id, u.username, u.email, u.fullname, u.dob, 
+            u.id, u.username, u.email, u.password, u.fullname, u.dob, 
             u.gender, u.address, u.avatarUrl,
             COALESCE(COUNT(DISTINCT p.postID), 0) AS total_posts,
             COALESCE(COUNT(DISTINCT c.commentID), 0) AS total_comments,
@@ -119,7 +119,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
         LEFT JOIN posts p ON u.id = p.userID
         LEFT JOIN comments c ON u.id = c.userID
         WHERE u.id = ?
-        GROUP BY u.id, u.username, u.email, u.fullname, u.dob, 
+        GROUP BY u.id, u.username, u.email, u.password, u.fullname, u.dob, 
                  u.gender, u.address, u.avatarUrl`;
 
     db.query(query, [userID], (err, result) => {
@@ -134,6 +134,7 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
                     id: user.id,
                     username: user.username,
                     email: user.email,
+                    password: user.password,
                     fullname: user.fullname,
                     dob: user.dob,
                     gender: user.gender,
@@ -151,18 +152,18 @@ app.get('/api/user-info', authenticateJWT, (req, res) => {
     });
 });
 
-// API cập nhật thông tin người dùng
+// Endpoint cập nhật thông tin người dùng
 app.put('/api/update-user', authenticateJWT, (req, res) => {
-    const { username, email, fullname, dob, gender, address, avatarUrl } = req.body;
+    const { username, email, password, fullname, dob, gender, address, avatarUrl } = req.body;
     const userId = req.user.id;
 
-    const query = `UPDATE users SET username = ?, email = ?, fullname = ?, dob = ?, gender = ?, address = ?, avatarUrl = ? WHERE id = ?`;
-    db.query(query, [username, email, fullname, dob, gender, address, avatarUrl, userId], (err, result) => {
+    const query = `UPDATE users SET username = ?, email = ?, password = ?, fullname = ?, dob = ?, gender = ?, address = ?, avatarUrl = ? WHERE id = ?`;
+    db.query(query, [username, email, password, fullname, dob, gender, address, avatarUrl, userId], (err, result) => {
         if (err) {
             console.error('Lỗi khi cập nhật thông tin người dùng:', err);
             return res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
         }
-        res.status(200).json({ message: 'Cập nhật thông tin thành công!', user: { username, email, fullname, dob, gender, address, avatarUrl } });
+        res.status(200).json({ message: 'Cập nhật thông tin thành công!', user: { username, email, password, fullname, dob, gender, address, avatarUrl } });
     });
 });
 
@@ -399,20 +400,328 @@ app.get('/cau-chuyen-thuong-ngay', (req, res) => {
     });
 });
 
+// Chủ đề bài viết
+app.get('/lam-dung-va-nghien', (req, res) => {
+    const topic = 'Lạm dụng, nghiện các chất';
 
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
 
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
+app.get('/cang-thang', (req, res) => {
+    const topic = 'Căng thẳng & Kiệt quệ tinh thần';
 
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
 
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
+app.get('/tram-cam', (req, res) => {
+    const topic = 'Trầm cảm & Lo lắng';
 
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
 
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
+app.get('/dau-buon', (req, res) => {
+    const topic = 'Đau buồn & Mất mát';
 
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
 
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
+app.get('/quan-he', (req, res) => {
+    const topic = 'Các mối quan hệ bạn bè, gia đình, xã hội';
 
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
 
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/doc-than', (req, res) => {
+    const topic = 'Độc thân & Các mối quan hệ tình cảm';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/cong-viec', (req, res) => {
+    const topic = 'Công việc, tiền bạc, tài chính';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/tre-em', (req, res) => {
+    const topic = 'Trẻ em và trẻ vị thành niên';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/truong-hoc', (req, res) => {
+    const topic = 'Trường học và học tập';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/tu-tu', (req, res) => {
+    const topic = 'Tự tử & Tự làm hại bản thân';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/tinh-duc', (req, res) => {
+    const topic = 'Tình dục & LGBT';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/an-uong', (req, res) => {
+    const topic = 'Ăn uống, dinh duỡng';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/suc-khoe', (req, res) => {
+    const topic = 'Sức khoẻ';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/khac', (req, res) => {
+    const topic = 'Các chủ đề khác';
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.purpose, p.likeCount, p.unlikeCount, p.datePosted,
+            u.username, u.avatarUrl,
+            (SELECT COUNT(*) FROM comments WHERE comments.postID = p.postID) AS total_comments
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        WHERE p.topic = ?
+        ORDER BY p.datePosted DESC`;
+
+    db.query(query, [topic], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

@@ -84,10 +84,10 @@ const CreatePost = () => {
                     topic: '',
                     purpose: ''
                 });
-            }
+            };
         } catch (error) {
             console.error('Lỗi khi đăng bài viết:', error);
-            setError("Đã xảy ra lỗi khi đăng bài viết. Vui lòng thử lại sau!");
+            setError("Tiêu đề bài viết đã tồn tại, bạn hãy nhập tiêu đề mới !");
         } finally {
             setIsLoading(false);
         }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Purpose4.css';
 import NavBar from "../NavBar";
+import Profile from "../Profile";
 import Search from "../Search";
 import RecentActivity from "../RecentActivity";
 import axios from 'axios';
@@ -93,6 +94,9 @@ const Purpose4 = () => {
             </div>
 
             <div className="right-content">
+                <div className="profile-section">
+                    <Profile />
+                </div>
                 <div className="search">
                     <Search />
                 </div>

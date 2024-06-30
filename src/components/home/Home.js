@@ -2,6 +2,7 @@ import React from "react";
 import './Home.css';
 import Topic from "./Topic.js";
 import Purpose from "./Purpose.js";
+import Profile from "./Profile.js";
 import Search from "./Search.js";
 import RecentPost from "./RecentPost.js";
 import RecentActivity from "./RecentActivity.js";
@@ -28,6 +29,9 @@ const Home = () => {
             </div>
 
             <div className="right-content">
+                <div className="user-info">
+                    <Profile />
+                </div>
                 <div className="search">
                     <Search />
                 </div>

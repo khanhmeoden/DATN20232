@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './LogIn.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import facebookbutton from '../../asset/facebookbutton.png';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
@@ -80,10 +79,6 @@ function LoginForm() {
                 console.log('Login Failed');
               }}
             />;
-          </div>
-
-          <div className='facebook-login'>
-            <img src={facebookbutton} className='facebook' alt='Đăng nhập với tài khoản Facebook'/>
           </div>
 
           <button type="submit" disabled={loading}>Đăng nhập</button>

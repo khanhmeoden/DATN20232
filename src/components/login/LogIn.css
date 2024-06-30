@@ -118,15 +118,6 @@ button[type="submit"]:active {
 .google {
     width: 250px; 
     cursor: pointer;
-    margin-bottom: 10px;
-}
-
-.facebook {
-    width: 250px;
-    cursor: pointer;
-}
-
-.facebook-login {
     margin-bottom: 15px;
 }
 

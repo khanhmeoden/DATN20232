@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Purpose1.css';
 import NavBar from "../NavBar";
+import Profile from "../Profile";
 import Search from "../Search";
 import RecentActivity from "../RecentActivity";
 import axios from 'axios';
@@ -68,8 +69,8 @@ const Purpose1 = () => {
                             </tr>
                         </thead>
                         <tbody className="purpose1-table-body">
-                            {posts.map((post, index) => (
-                                <tr key={index}>
+                            {posts.map((post) => (
+                                <tr key={post.id}>
                                     <td className="purpose-posts-table-row-author">
                                         <div className="author-info">
                                         <img
@@ -93,6 +94,9 @@ const Purpose1 = () => {
             </div>
 
             <div className="right-content">
+                <div className="profile-section">
+                    <Profile />
+                </div>
                 <div className="search">
                     <Search />
                 </div>

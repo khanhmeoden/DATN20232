@@ -205,3 +205,8 @@
     color: rgb(161, 0, 0);
     font-size: 16px;
 }
+
+button.password-toggle {
+    width: 6%;
+    padding: 6px;
+}
