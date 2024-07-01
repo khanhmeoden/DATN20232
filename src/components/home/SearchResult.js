@@ -4,6 +4,7 @@ import axios from 'axios';
 import defaultAvatar from '../../asset/unknown-user.jpg';
 import NavBar from "./NavBar";
 import Profile from "./Profile";
+import Search from "./Search";
 import './SearchResult.css';
 
 const topicClasses = {
@@ -118,6 +119,9 @@ const SearchResult = () => {
             <div className="right-content">
                 <div className="profile-section">
                     <Profile />
+                </div>
+                <div className="search">
+                    <Search />
                 </div>
             </div>
         </div>
