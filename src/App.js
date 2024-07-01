@@ -2,7 +2,7 @@ import Home from './components/home/Home';
 import Register from './components/register/Register';
 import LogInForm from './components/login/LogIn';
 import { Routes, Route } from 'react-router-dom';
-import HomeLogged from './components/home/HomeLogged';
+// import HomeLogged from './components/home/HomeLogged';
 import CreatePost from './components/home/CreatePost';
 import UserInfo from './components/home/UserInfo';
 import SearchResult from './components/home/SearchResult';
@@ -33,7 +33,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='register' element={<Register />}></Route>
         <Route path='login' element={<LogInForm />}></Route>
-        <Route path='home' element={<HomeLogged />}></Route>
+        {/* <Route path='home' element={<HomeLogged />}></Route> */}
         <Route path='create-post' element={<CreatePost />}></Route>
         <Route path='user-info' element={<UserInfo />}></Route>
         <Route path="/search-results" element={<SearchResult />} />

@@ -32,7 +32,7 @@ const NavBar = () => {
                 <img src={logo} alt="Diễn đàn tâm lý" className="logo" />
             </div>
             <ul className="menu-list">
-                <li className="link"><Link to="/home" className="nav">Trang chủ</Link></li>
+                <li className="link"><Link to="/" className="nav">Trang chủ</Link></li>
                 {isLoggedIn && <li className="link"><Link to="/create-post" className="nav">Tạo bài viết</Link></li>}
                 {isLoggedIn && <li className="link"><Link to="/user-info" className="nav">Hồ sơ cá nhân</Link></li>}
                 {isLoggedIn && <li className="link"><Link to="/" onClick={handleLogout} className="nav">Đăng xuất</Link></li>}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Topic2.css';
 import NavBar from "../NavBar";
+import Profile from "../Profile";
 import Search from "../Search";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFaceTired } from "@fortawesome/free-solid-svg-icons";
@@ -84,6 +85,9 @@ const Topic2 = () => {
             </div>
 
             <div className="right-content">
+                <div className="profile-section">
+                    <Profile />
+                </div>
                 <div className="search">
                     <Search />
                 </div>

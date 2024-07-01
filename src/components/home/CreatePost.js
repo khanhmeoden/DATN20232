@@ -86,7 +86,7 @@ const CreatePost = () => {
             };
         } catch (error) {
             console.error('Lỗi khi đăng bài viết:', error);
-            setError("Tiêu đề bài viết đã tồn tại, bạn hãy nhập tiêu đề mới s!");
+            setError("Tiêu đề bài viết đã tồn tại, bạn hãy nhập tiêu đề mới !");
         } finally {
             setIsLoading(false);
         }

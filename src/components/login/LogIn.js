@@ -40,7 +40,7 @@ function LoginForm() {
         const { token } = response.data;
         localStorage.setItem('token', token);
         alert('Đăng nhập thành công!');
-        navigate('/home');
+        navigate('/');
       }
     } catch (error) {
       console.error('Lỗi khi đăng nhập:', error);

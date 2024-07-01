@@ -223,3 +223,11 @@ button.password-toggle {
     width: 6%;
     padding: 6px;
 }
+
+.profile-section {
+    margin-top: 50px;
+}
+
+.search-section {
+    margin-top: 50px;
+}
