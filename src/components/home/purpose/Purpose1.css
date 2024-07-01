@@ -4,7 +4,7 @@
 }
 
 .purpose1-bar {
-    background: linear-gradient(90deg, red, white);
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0.63), white);
     padding: 10px 20px;
     margin-bottom: 50px;
 }
@@ -45,6 +45,7 @@
 
 .purpose-posts-table-row-comment {
     color: rgb(0, 225, 255);
+    font-weight: bold;
 }
 
 .purpose-posts-table-row-date-posted {
@@ -76,7 +77,7 @@
 }
 
 .purpose1-table-body {
-    background-color: #ffd5d5;
+    background-color: #f9dada;
     font-size: 15px;
 }
 
@@ -96,8 +97,10 @@ th.purpose-posts-table-topic {
 
 .purpose-posts-table-row-likes .like-count {
     color: rgb(0, 255, 0); 
+    font-weight: bold;
 }
 
 .purpose-posts-table-row-likes .unlike-count {
     color: red; 
+    font-weight: bold;
 }

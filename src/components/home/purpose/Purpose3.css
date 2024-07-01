@@ -4,7 +4,7 @@
 }
 
 .purpose3-bar {
-    background: linear-gradient(90deg, rgb(152, 6, 152), white);
+    background: linear-gradient(90deg, rgba(152, 6, 152, 0.597), white);
     padding: 10px 20px;
     margin-bottom: 50px;
 }

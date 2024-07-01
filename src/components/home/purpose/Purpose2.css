@@ -4,7 +4,7 @@
 }
 
 .purpose2-bar {
-    background: linear-gradient(90deg, green, white);
+    background: linear-gradient(90deg, rgba(0, 128, 0, 0.603), white);
     padding: 10px 20px;
     margin-bottom: 50px;
 }
@@ -25,7 +25,7 @@
 }
 
 .purpose2-table-body {
-    background-color: rgb(201, 240, 201);
+    background-color: rgb(225, 248, 225);
     font-size: 15px;
 }
 
