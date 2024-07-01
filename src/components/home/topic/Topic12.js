@@ -4,7 +4,7 @@ import NavBar from "../NavBar";
 import Profile from "../Profile";
 import Search from "../Search";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBurger } from "@fortawesome/free-solid-svg-icons";
+import { faBrain } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import defaultAvatar from '../../../asset/unknown-user.jpg';
 
@@ -24,7 +24,7 @@ const Topic12 = () => {
     }, []);
 
     const fetchPosts = () => {
-        axios.get('http://localhost:8080/an-uong')
+        axios.get('http://localhost:8080/tam-than')
             .then(response => {
                 setPosts(response.data);
                 console.log(response.data);
@@ -44,7 +44,7 @@ const Topic12 = () => {
 
             <div className="left-content">
                 <div className="topic12-bar">
-                    <h1 id="topic12-title"><FontAwesomeIcon icon={faBurger} id="topic12-item"/>Ăn uống, dinh duỡng</h1>
+                    <h1 id="topic12-title"><FontAwesomeIcon icon={faBrain} id="topic12-item"/>Các chứng bệnh tâm thần </h1>
                 </div>
 
                 <div className="topic-posts">

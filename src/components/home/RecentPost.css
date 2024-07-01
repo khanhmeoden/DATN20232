@@ -96,7 +96,7 @@ span.cat-name {
 }
 
 .recent-post-table th {
-    background-color: #07e78d;
+    background-color: #8cd7f0;
     line-height: 40px;
     color: white;
     font-family: "Lato", sans-serif;
@@ -105,7 +105,7 @@ span.cat-name {
 }
 
 .recent-post-table tbody {
-    background-color: lightgoldenrodyellow;
+    background-color: rgb(255, 255, 234);
     font-size: 15px;
 }
 
@@ -127,11 +127,11 @@ span.cat-name {
 }
 
 .topic-relationships {
-    color: #dbd80f;
+    color: #d3d336;
 }
 
 .topic-dating {
-    color: red;
+    color: rgb(225, 81, 81);
 }
 
 .topic-finance {
@@ -154,8 +154,8 @@ span.cat-name {
     color: rgb(255, 0, 132);
 }
 
-.topic-nutrition {
-    color: rgb(230, 192, 55);
+.topic-psycho {
+    color: rgb(69, 16, 243);
 }
 
 .topic-health {

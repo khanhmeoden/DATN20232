@@ -8,7 +8,7 @@
     margin-bottom: 0;
     border-bottom: 0;
     border-radius: 0;
-    background-color: #43a6df;
+    background-color: #4094c4;
     flex-wrap: wrap;
     display: flex;
     justify-content: space-between;
@@ -124,7 +124,7 @@ span.cat-name {
 }
 
 .item5 {
-    color: #faf60e;
+    color: #b4b11f;
     font-size: 17px;
 }
 
@@ -155,7 +155,7 @@ span.cat-name {
 }
 
 .item12 {
-    color: rgb(230, 192, 55);
+    color: rgb(69, 16, 243);
 }
 
 .item13 {

@@ -39,29 +39,6 @@ CREATE TABLE comments (
     FOREIGN KEY (userID) REFERENCES users(id)
 ) CHARACTER SET utf8mb4;
 
-CREATE TABLE messages (
-    messageID INT AUTO_INCREMENT PRIMARY KEY,
-    senderID INT,
-    recipientID INT,
-    content TEXT,
-    sentAt DATETIME,
-    FOREIGN KEY (senderID) REFERENCES users(id),
-    FOREIGN KEY (recipientID) REFERENCES users(id)
-);
-
-CREATE TABLE notifications (
-    notificationID INT AUTO_INCREMENT PRIMARY KEY,
-    userID INT,
-    notificationType ENUM('like_post', 'like_comment', 'comment_post') NOT NULL,
-    postID INT,
-    commentID INT,
-    isRead BOOLEAN DEFAULT FALSE,
-    createdAt DATETIME,
-    FOREIGN KEY (userID) REFERENCES users(id),
-    FOREIGN KEY (postID) REFERENCES posts(postID),
-    FOREIGN KEY (commentID) REFERENCES comments(commentID)
-);
-
 CREATE TABLE reports (
     reportID INT AUTO_INCREMENT PRIMARY KEY,
     reporterID INT,

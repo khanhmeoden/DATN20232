@@ -27,7 +27,7 @@ const CreatePost = () => {
         'Trường học và học tập',
         'Tự tử & Tự làm hại bản thân',
         'Tình dục & LGBT',
-        'Ăn uống, dinh dưỡng',
+        'Các chứng bệnh tâm thần ',
         'Sức khoẻ',
         'Các chủ đề khác'
     ];

@@ -1,7 +1,7 @@
 import React from "react";
 import './Topic.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPeopleGroup, faWineBottle, faFaceTired, faFaceFrown, faFaceSadTear, faUserGroup, faHeart, faSackDollar, faBaby, faSchool, faFaceDizzy, faVenusMars, faBurger, faNotesMedical, faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faPeopleGroup, faWineBottle, faFaceTired, faFaceFrown, faFaceSadTear, faUserGroup, faHeart, faSackDollar, faBaby, faSchool, faFaceDizzy, faVenusMars, faBrain, faNotesMedical, faQuestion } from "@fortawesome/free-solid-svg-icons";
 
 const Topic = () => {
     return (
@@ -98,9 +98,9 @@ const Topic = () => {
 
                             <div className="topic-item">                    
                                 <span className="topic-item-icon">
-                                    <FontAwesomeIcon className = "item12" icon={faBurger} />
+                                    <FontAwesomeIcon className = "item12" icon={faBrain} />
                                 </span>
-                                <a href="/topic12">Ăn uống, dinh duỡng</a>   
+                                <a href="/topic12">Các chứng bệnh tâm thần </a>   
                             </div>
 
                             <div className="topic-item">                    

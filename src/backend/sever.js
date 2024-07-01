@@ -630,8 +630,8 @@ app.get('/tinh-duc', (req, res) => {
     });
 });
 
-app.get('/an-uong', (req, res) => {
-    const topic = 'Ăn uống, dinh duỡng';
+app.get('/tam-than', (req, res) => {
+    const topic = 'Các chứng bệnh tâm thần ';
 
     const query = `
         SELECT 
