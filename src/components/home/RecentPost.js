@@ -17,7 +17,7 @@ const topicClasses = {
     'Trường học và học tập': 'topic-school',
     'Tự tử & Tự làm hại bản thân': 'topic-suicide',
     'Tình dục & LGBT': 'topic-lgbt',
-    'Ăn uống, dinh duỡng': 'topic-food',
+    'Ăn uống, dinh dưỡng': 'topic-food',
     'Sức khoẻ': 'topic-health',
     'Các chủ đề khác': 'topic-other'
 };
