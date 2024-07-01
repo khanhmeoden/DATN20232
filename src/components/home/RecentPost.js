@@ -77,8 +77,8 @@ const RecentPost = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {posts.map((post, index) => (
-                                <tr key={index}>
+                            {posts.map((post) => (
+                                <tr key={post.id}>
                                     <td className="recent-post-table-row-username-avatar">
                                         <div className="author-info">
                                             <img
