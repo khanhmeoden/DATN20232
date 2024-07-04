@@ -74,6 +74,7 @@ function LoginForm() {
               onSuccess={credentialResponse => {
                 const decode = jwtDecode(credentialResponse?.credential);
                 console.log(decode);
+                navigate('/');
               }}
               onError={() => {
                 console.log('Login Failed');
