@@ -254,8 +254,8 @@ app.get('/api/recent-posts', (req, res) => {
 app.get('/search', (req, res) => {
     const keyword = req.query.keyword;
 
-    if (!keyword) {
-        return res.status(400).json({ message: 'Vui lòng cung cấp từ khóa tìm kiếm' });
+    if (!keyword || typeof keyword !== 'string') {
+        return res.status(400).json({ message: 'Vui lòng cung cấp từ khóa tìm kiếm hợp lệ' });
     }
 
     const searchPattern = `%${keyword}%`;
@@ -698,6 +698,48 @@ app.get('/khac', (req, res) => {
         }
     });
 });
+
+// API endpoint để lấy thông tin chi tiết của một bài viết dựa trên tiêu đề
+app.get('/api/post/:encodedTitle', (req, res) => {
+    const encodedTitle = req.params.encodedTitle;
+    const title = decodeURIComponent(encodedTitle);
+
+    const query = `
+        SELECT 
+            p.postID, p.title, p.content, p.topic, p.purpose, p.datePosted, p.likeCount, p.unlikeCount,
+            u.username AS postUsername, u.avatarUrl AS postUserAvatar,
+            c.commentID, c.content AS commentContent, c.dateCommented, c.likeCount AS commentLikeCount, c.unlikeCount AS commentUnlikeCount,
+            cu.username AS commentUsername, cu.avatarUrl AS commentUserAvatar,
+            r.replyID, r.reply_content, r.reply_date, r.likeCount AS replyLikeCount, r.unlikeCount AS replyUnlikeCount,
+            ru.username AS replyUsername, ru.avatarUrl AS replyUserAvatar
+        FROM posts p
+        JOIN users u ON p.userID = u.id
+        LEFT JOIN comments c ON c.postID = p.postID
+        LEFT JOIN users cu ON c.userID = cu.id
+        LEFT JOIN replies r ON r.commentID = c.commentID
+        LEFT JOIN users ru ON r.userID = ru.id
+        WHERE p.title = ?
+        ORDER BY c.dateCommented ASC, r.reply_date ASC
+    `;
+
+    db.query(query, [title], (err, results) => {
+        if (err) {
+            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).json({ message: 'Không tìm thấy bài viết' });
+            return;
+        }
+
+        // Xử lý kết quả truy vấn và trả về dữ liệu
+        // ...
+    });
+});
+
+  
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

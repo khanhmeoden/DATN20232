@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import './Purpose3.css';
 import NavBar from "../NavBar";
 import Profile from "../Profile";
@@ -18,7 +19,7 @@ const topicClasses = {
     'Trường học và học tập': 'topic-school',
     'Tự tử & Tự làm hại bản thân': 'topic-suicide',
     'Tình dục & LGBT': 'topic-lgbt',
-    'Ăn uống, dinh duỡng': 'topic-nutrition',
+    'Ăn uống, dinh dưỡng': 'topic-nutrition',
     'Sức khoẻ': 'topic-health',
     'Các chủ đề khác': 'topic-other'
 };
@@ -68,8 +69,8 @@ const Purpose3 = () => {
                             </tr>
                         </thead>
                         <tbody className="purpose3-table-body">
-                            {posts.map((post, index) => (
-                                <tr key={index}>
+                            {posts.map((post) => (
+                                <tr key={post.id}>
                                     <td className="purpose-posts-table-row-author">
                                         <div className="author-info">
                                         <img
@@ -80,7 +81,7 @@ const Purpose3 = () => {
                                         <p>{post.username}</p>
                                         </div>
                                     </td>
-                                    <td className="purpose-posts-table-row-title">{post.title}</td>
+                                    <td className="purpose-posts-table-row-title"><Link to={`/post/${post.title}`}>{post.title}</Link></td>
                                     <td className={`purpose-posts-table-row-topic ${topicClasses[post.topic] || ''}`}>{post.topic}</td>                                    
                                     <td className="purpose-posts-table-row-likes"><span className="like-count">{post.likeCount}</span> / <span className="unlike-count">{post.unlikeCount}</span></td>
                                     <td className="purpose-posts-table-row-comment">{post.total_comments}</td>

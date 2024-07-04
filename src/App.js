@@ -2,10 +2,10 @@ import Home from './components/home/Home';
 import Register from './components/register/Register';
 import LogInForm from './components/login/LogIn';
 import { Routes, Route } from 'react-router-dom';
-// import HomeLogged from './components/home/HomeLogged';
 import CreatePost from './components/home/CreatePost';
 import UserInfo from './components/home/UserInfo';
 import SearchResult from './components/home/SearchResult';
+import PostDetail from './components/post/PostDetail';
 
 import Topic1 from './components/home/topic/Topic1';
 import Topic2 from './components/home/topic/Topic2';
@@ -33,7 +33,6 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='register' element={<Register />}></Route>
         <Route path='login' element={<LogInForm />}></Route>
-        {/* <Route path='home' element={<HomeLogged />}></Route> */}
         <Route path='create-post' element={<CreatePost />}></Route>
         <Route path='user-info' element={<UserInfo />}></Route>
         <Route path="/search-results" element={<SearchResult />} />
@@ -61,8 +60,10 @@ function App() {
         <Route path='/purpose3' element={<Purpose3 />}></Route>        
         <Route path='/purpose4' element={<Purpose4 />}></Route>        
 
+        <Route path="/post/:title" component={<PostDetail />} />
     </Routes>
   );
 }
 
 export default App;
+

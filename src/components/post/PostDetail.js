@@ -1,85 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import defaultAvatar from '../../asset/unknown-user.jpg';
+import { useParams } from 'react-router-dom';
 
-const PostDetail = ({ match }) => {
-    const [post, setPost] = useState(null);
-    const [loading, setLoading] = useState(true);
+const PostDetail = () => {
+  const { title } = useParams();
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchPostDetail = async () => {
-            const postId = match.params.postId;
-            try {
-                const response = await axios.get(`http://localhost:8080/api/post/${postId}`);
-                setPost(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching post detail:', error);
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    const fetchPostDetail = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/post/${title}`);
+        const data = await response.json();
+        console.log(data);
 
-        fetchPostDetail();
-    }, [match.params.postId]);
+        if (response.ok) {
+          setPost(data);
+        } else {
+          console.error('Error fetching post:', data);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    fetchPostDetail();
+  }, [title]);
 
-    if (!post) {
-        return <div>Post not found.</div>;
-    }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    return (
-        <div className="post-detail">
-            <div className="post-author">
-                <img src={post.author.avatarUrl ? `data:image/jpeg;base64,${post.author.avatarUrl}` : defaultAvatar} alt={post.author.username} className="avatar" />
-                <p>{post.author.username}</p>
+  if (!post) {
+    return <div>Bài viết không tồn tại</div>;
+  }
+
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+      <p>Người đăng: {post.user.username}</p>
+      <img src={post.user.avatarUrl} alt="Avatar người đăng" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+      <h2>Bình luận</h2>
+      {post.comments.map(comment => (
+        <div key={comment.commentID}>
+          <p>{comment.content}</p>
+          <p>Người bình luận: {comment.user.username}</p>
+          <img src={comment.user.avatarUrl} alt="Avatar người bình luận" style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+          {comment.replies.map(reply => (
+            <div key={reply.replyID}>
+              <p>{reply.content}</p>
+              <p>Người trả lời: {reply.user.username}</p>
+              <img src={reply.user.avatarUrl} alt="Avatar người trả lời" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
             </div>
-            <div className="post-content">
-                <h2>{post.title}</h2>
-                <div className="post-info">
-                    <p><strong>Chủ đề:</strong> {post.topic}</p>
-                    <p><strong>Mục đích:</strong> {post.purpose}</p>
-                    <p><strong>Nội dung:</strong> {post.content}</p>
-                    <p><strong>Số lượt thích:</strong> {post.likeCount}</p>
-                    <p><strong>Số lượt không thích:</strong> {post.unlikeCount}</p>
-                    <p><strong>Ngày đăng:</strong> {new Date(post.datePosted).toLocaleDateString()}</p>
-                </div>
-            </div>
-            <div className="comments">
-                {post.comments.map(comment => (
-                    <div key={comment.commentId} className="comment">
-                        <div className="comment-author">
-                            <img src={comment.user.avatarUrl ? `data:image/jpeg;base64,${comment.user.avatarUrl}` : defaultAvatar} alt={comment.user.username} className="avatar" />
-                            <p>{comment.user.username}</p>
-                        </div>
-                        <div className="comment-content">
-                            <p>{comment.content}</p>
-                            <p><strong>Số lượt thích:</strong> {comment.likeCount}</p>
-                            <p><strong>Ngày đăng:</strong> {new Date(comment.datePosted).toLocaleDateString()}</p>
-                        </div>
-                        {comment.replies.map(reply => (
-                            <div key={reply.replyId} className="reply">
-                                <div className="reply-author">
-                                    <img src={reply.user.avatarUrl ? `data:image/jpeg;base64,${reply.user.avatarUrl}` : defaultAvatar} alt={reply.user.username} className="avatar" />
-                                    <p>{reply.user.username}</p>
-                                </div>
-                                <div className="reply-content">
-                                    <p>{reply.content}</p>
-                                    <p><strong>Số lượt thích:</strong> {reply.likeCount}</p>
-                                    <p><strong>Ngày đăng:</strong> {new Date(reply.datePosted).toLocaleDateString()}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ))}
-            </div>
-            <div className="comment-form">
-                {/* Để lại form comment ở đây */}
-            </div>
+          ))}
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default PostDetail;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import unknown_user from '../../asset/unknown-user.jpg';
 import './Profile.css';
 
-const Profile = () => {
+const Profile = () => { 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 

@@ -3,6 +3,7 @@ import './RecentPost.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 import defaultAvatar from '../../asset/unknown-user.jpg';
 
 const topicClasses = {
@@ -89,7 +90,9 @@ const RecentPost = () => {
                                             <p>{post.username}</p>
                                         </div>
                                     </td>
-                                    <td className="recent-post-table-row-title">{post.title}</td>
+                                    <td className="recent-post-table-row-title">
+                                        <Link to={`/post/${post.title}`}>{post.title}</Link>
+                                    </td>
                                     <td className={`recent-post-table-row-topic ${topicClasses[post.topic] || ''}`}>{post.topic}</td>                                    
                                     <td className={`recent-post-table-row-purpose ${purposeClasses[post.purpose] || ''}`}>{post.purpose}</td>
                                     <td className="recent-post-table-row-likes">{post.likeCount}</td>

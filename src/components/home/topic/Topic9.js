@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import './Topic9.css';
 import NavBar from "../NavBar";
 import Profile from "../Profile";
@@ -73,7 +74,7 @@ const Topic9 = () => {
                                         <p>{post.username}</p>
                                         </div>
                                     </td>
-                                    <td className="topic-posts-table-row-title">{post.title}</td>
+                                    <td className="topic-posts-table-row-title"><Link to={`/post/${post.title}`}>{post.title}</Link></td>
                                     <td className={`topic-posts-table-row-topic ${purposeClasses[post.purpose] || ''}`}>{post.purpose}</td>                                    
                                     <td className="topic-posts-table-row-likes"><span className="like-count">{post.likeCount}</span> / <span className="unlike-count">{post.unlikeCount}</span></td>
                                     <td className="topic-posts-table-row-comment">{post.total_comments}</td>
