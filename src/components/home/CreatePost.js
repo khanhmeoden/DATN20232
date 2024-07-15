@@ -87,6 +87,9 @@ const CreatePost = () => {
         } catch (error) {
             console.error('Lỗi khi đăng bài viết:', error);
             setError("Tiêu đề bài viết đã tồn tại, bạn hãy nhập tiêu đề mới !");
+            if (error.response.status === 403) {
+                alert("Phiên sử dụng đã hết hoặc bạn chưa đăng nhập. Vui lòng đăng nhập lại");
+            }
         } finally {
             setIsLoading(false);
         }

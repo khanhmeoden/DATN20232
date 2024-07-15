@@ -10,19 +10,19 @@ const NavBar = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            setIsLoggedIn(true); // Nếu có token tồn tại, người dùng đã đăng nhập
+            setIsLoggedIn(true); 
         } else {
-            setIsLoggedIn(false); // Ngược lại, người dùng chưa đăng nhập
+            setIsLoggedIn(false);
         }
     }, []);
 
     const handleLogoClick = () => {
-        navigate('/home');
+        navigate('/');
     };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setIsLoggedIn(false); // Đặt trạng thái đăng nhập về false khi người dùng đăng xuất
+        setIsLoggedIn(false); 
         navigate('/');
     };
 

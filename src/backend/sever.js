@@ -699,47 +699,297 @@ app.get('/khac', (req, res) => {
     });
 });
 
-// API endpoint để lấy thông tin chi tiết của một bài viết dựa trên tiêu đề
-app.get('/api/post/:encodedTitle', (req, res) => {
-    const encodedTitle = req.params.encodedTitle;
-    const title = decodeURIComponent(encodedTitle);
+// API lấy thông tin bài viết 
+app.get('/api/posts/title/:title', (req, res) => {
+    const title = decodeURIComponent(req.params.title);
 
-    const query = `
+    const postQuery = `
         SELECT 
-            p.postID, p.title, p.content, p.topic, p.purpose, p.datePosted, p.likeCount, p.unlikeCount,
-            u.username AS postUsername, u.avatarUrl AS postUserAvatar,
-            c.commentID, c.content AS commentContent, c.dateCommented, c.likeCount AS commentLikeCount, c.unlikeCount AS commentUnlikeCount,
-            cu.username AS commentUsername, cu.avatarUrl AS commentUserAvatar,
-            r.replyID, r.reply_content, r.reply_date, r.likeCount AS replyLikeCount, r.unlikeCount AS replyUnlikeCount,
-            ru.username AS replyUsername, ru.avatarUrl AS replyUserAvatar
+            p.postID,
+            p.title,
+            p.topic,
+            p.purpose,
+            p.content,
+            p.likeCount,
+            p.unlikeCount,
+            u.username AS author_username,
+            u.avatarUrl AS author_avatar,
+            p.datePosted
         FROM posts p
         JOIN users u ON p.userID = u.id
-        LEFT JOIN comments c ON c.postID = p.postID
-        LEFT JOIN users cu ON c.userID = cu.id
-        LEFT JOIN replies r ON r.commentID = c.commentID
-        LEFT JOIN users ru ON r.userID = ru.id
-        WHERE p.title = ?
-        ORDER BY c.dateCommented ASC, r.reply_date ASC
+        WHERE p.title = ?;
     `;
 
-    db.query(query, [title], (err, results) => {
+    const commentsQuery = `
+        SELECT 
+            c.commentID,
+            c.content AS comment_content,
+            c.likeCount AS comment_likeCount,
+            c.unlikeCount AS comment_unlikeCount,
+            u.username AS commenter_username,
+            u.avatarUrl AS commenter_avatar,
+            c.dateCommented
+        FROM comments c
+        JOIN users u ON c.userID = u.id
+        WHERE c.postID = ?;
+    `;
+
+    const repliesQuery = `
+        SELECT 
+            r.replyID,
+            r.commentID,
+            r.reply_content AS reply_content,
+            r.likeCount AS reply_likeCount,
+            r.unlikeCount AS reply_unlikeCount,
+            r.reply_date AS reply_date,
+            u.username AS replier_username,
+            u.avatarUrl AS replier_avatar
+        FROM replies r
+        JOIN users u ON r.userID = u.id
+        JOIN comments c ON r.commentID = c.commentID
+        WHERE c.postID = ?;
+    `;
+
+    db.query(postQuery, [title], (err, postResult) => {
         if (err) {
             console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
-            res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
-            return;
-        }
+            return res.status(500).json('Lỗi máy chủ nội bộ');
+        } else if (postResult.length > 0) {
+            const post = postResult[0];
 
-        if (results.length === 0) {
-            res.status(404).json({ message: 'Không tìm thấy bài viết' });
-            return;
-        }
+            db.query(commentsQuery, [post.postID], (err, commentsResult) => {
+                if (err) {
+                    console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+                    return res.status(500).json('Lỗi máy chủ nội bộ');
+                } else {
+                    post.comments = commentsResult;
 
-        // Xử lý kết quả truy vấn và trả về dữ liệu
-        // ...
+                    db.query(repliesQuery, [post.postID], (err, repliesResult) => {
+                        if (err) {
+                            console.error('Lỗi kết nối tới cơ sở dữ liệu:', err);
+                            return res.status(500).json('Lỗi máy chủ nội bộ');
+                        } else {
+                            post.comments.forEach(comment => {
+                                comment.replies = repliesResult.filter(reply => reply.commentID === comment.commentID);
+                            });
+
+                            res.status(200).json(post);
+                        }
+                    });
+                }
+            });
+        } else {
+            res.status(404).json('Không tìm thấy bài viết');
+        }
     });
 });
 
-  
+
+// API cập nhật số lượng like cho bài viết
+app.post('/api/posts/like/:postID', authenticateJWT, (req, res) => {
+    const postID = req.params.postID;
+    const likeCount = req.body.likeCount;
+
+    const query = 'UPDATE posts SET likeCount = ? WHERE postID = ?';
+    db.query(query, [likeCount, postID], (err, result) => {
+        if (err) {
+            console.error('Lỗi cập nhật lượt like:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Cập nhật lượt like thành công');
+        }
+    });
+});
+
+// API cập nhật số lượng unlike cho bài viết
+app.post('/api/posts/unlike/:postID', authenticateJWT, (req, res) => {
+    const postID = req.params.postID;
+    const unlikeCount = req.body.unlikeCount;
+
+    const query = 'UPDATE posts SET unlikeCount = ? WHERE postID = ?';
+    db.query(query, [unlikeCount, postID], (err, result) => {
+        if (err) {
+            console.error('Lỗi cập nhật lượt unlike:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Cập nhật lượt unlike thành công');
+        }
+    });
+});
+
+
+// API cập nhật số lượng like cho comment
+app.post('/api/comments/like/:commentID', authenticateJWT, (req, res) => {
+    const commentID = req.params.commentID;
+    const likeCount = req.body.likeCount;
+
+    const query = 'UPDATE comments SET likeCount = ? WHERE commentID = ?';
+    db.query(query, [likeCount, commentID], (err, result) => {
+        if (err) {
+            console.error('Lỗi cập nhật tương tác cho comment:', err);
+            res.status(500).json('Internal Server Error');
+        } else {
+            res.status(200).json('Tương tác thành công');
+        }
+    });
+});
+
+// API cập nhật số lượng unlike cho comment
+app.post('/api/comments/unlike/:commentID', authenticateJWT, (req, res) => {
+    const commentID = req.params.commentID;
+    const unlikeCount = req.body.unlikeCount;
+
+    const query = 'UPDATE comments SET unlikeCount = ? WHERE commentID = ?';
+    db.query(query, [unlikeCount, commentID], (err, result) => {
+        if (err) {
+            console.error('Lỗi cập nhật tương tác cho comment:', err);
+            res.status(500).json('Internal Server Error');
+        } else {
+            res.status(200).json('Tương tác thành công');
+        }
+    });
+});
+
+// Endpoint API thêm bình luận
+app.post('/api/comments', authenticateJWT, (req, res) => {
+    const { postID, content } = req.body;
+    const userID = req.user.id;
+
+    const query = `INSERT INTO comments (postID, userID, content, dateCommented) VALUES (?, ?, ?, NOW())`;
+    db.query(query, [postID, userID, content], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json('Internal Server Error');
+        } else {
+            res.status(200).json('Bình luận được đăng thành công');
+        }
+    });
+});
+
+// Endpoint để gửi báo cáo bài viết
+app.post('/api/reports/post', authenticateJWT, (req, res) => {
+    const { reportedItemID, reportContent } = req.body;
+    const reporterID = req.user.id;
+
+    const query = `INSERT INTO reports (reporterID, reportedItemID, itemType, reportContent, reportedAt)
+        VALUES (?, ?, 'post', ?, NOW())`;
+
+    db.query(query, [reporterID, reportedItemID, reportContent], (err, result) => {
+        if (err) {
+            console.error('Lỗi gửi báo cáo bài viết:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Báo cáo bài viết thành công');
+        }
+    });
+});
+
+// Endpoint để gửi báo cáo bình luận
+app.post('/api/reports/comment', authenticateJWT, (req, res) => {
+    const { reportedItemID, reportContent } = req.body;
+    const reporterID = req.user.id;
+
+    const query = `
+        INSERT INTO reports (reporterID, reportedItemID, itemType, reportContent, reportedAt)
+        VALUES (?, ?, 'comment', ?, NOW())
+    `;
+
+    db.query(query, [reporterID, reportedItemID, reportContent], (err, result) => {
+        if (err) {
+            console.error('Lỗi gửi báo cáo bình luận:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Báo cáo bình luận thành công');
+        }
+    });
+});
+
+// Endpoint API trả lời bìh luận
+app.post('/api/comments/:commentID/replies', authenticateJWT, (req, res) => {
+    const { commentID } = req.params;
+    const { content, postID } = req.body; // Ensure postID is included in the request body
+    const userID = req.user.id;
+
+    const query = `
+        INSERT INTO replies (commentID, userID, reply_content, postID)
+        VALUES (?, ?, ?, ?)
+    `;
+
+    db.query(query, [commentID, userID, content, postID], (err, result) => {
+        if (err) {
+            console.error('Lỗi gửi trả lời:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Trả lời của bạn đã được gửi.');
+        }
+    });
+});
+
+// Endpoint API hiển thị phần trả lời bình luận
+app.get('/api/comments/:commentID/replies', (req, res) => {
+    const { commentID } = req.params;
+
+    const query = `
+        SELECT replies.replyID, replies.reply_content, replies.reply_date, users.username as replier_username
+        FROM replies
+        JOIN users ON replies.userID = users.userID
+        WHERE replies.commentID = ?
+    `;
+
+    db.query(query, [commentID], (err, results) => {
+        if (err) {
+            console.error('Lỗi lấy thông tin trả lời:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+// Endpoint API like trả lời bình luận
+app.post('/api/replies/like/:replyID', authenticateJWT, (req, res) => {
+    const { replyID } = req.params;
+    const { likeCount } = req.body;
+    const userID = req.user.id;
+
+    const query = `
+        INSERT INTO replies (replyID, userID)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE likeCount = ?
+    `;
+
+    db.query(query, [replyID, userID, likeCount], (err, result) => {
+        if (err) {
+            console.error('Lỗi gửi lượt thích:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Lượt thích của bạn đã được gửi.');
+        }
+    });
+});
+
+// Endpoint API unlike trả lời bình luận
+app.post('/api/replies/unlike/:replyID', authenticateJWT, (req, res) => {
+    const { replyID } = req.params;
+    const { unlikeCount } = req.body;
+    const userID = req.user.id;
+
+    const query = `
+        INSERT INTO replies (replyID, userID)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE unlikeCount = ?
+    `;
+
+    db.query(query, [replyID, userID, unlikeCount], (err, result) => {
+        if (err) {
+            console.error('Lỗi gửi lượt không thích:', err);
+            res.status(500).json('Lỗi máy chủ nội bộ');
+        } else {
+            res.status(200).json('Lượt không thích của bạn đã được gửi.');
+        }
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

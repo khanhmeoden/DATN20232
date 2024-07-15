@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import './UserInfo.css';
 import NavBar from "./NavBar";
@@ -236,7 +237,7 @@ const UserInfo = () => {
                                     {posts.map((post, index) => (
                                         <tr key={post.post_id}>
                                             <td className="stt-column">{index + 1}</td>
-                                            <td className="title-column">{post.title}</td>
+                                            <td className="title-column"><Link to={`/post/${post.title}`}>{post.title}</Link></td>
                                             <td className="topic-column">{post.topic}</td>
                                             <td className="purpose-column">{post.purpose}</td>
                                             <td className="likes-column">{post.likeCount} / {post.unlikeCount}</td>
@@ -246,6 +247,9 @@ const UserInfo = () => {
                                     ))}
                                 </tbody>
                             </table>
+                            {posts.length === 0 ? (
+                                <h1 className="nothing">Bạn chưa đăng bài viết nào trong diễn đàn.</h1>
+                            ) : ( null ) }
                         </div>
                     )}
                 </div>

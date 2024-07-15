@@ -91,7 +91,7 @@ const RecentPost = () => {
                                         </div>
                                     </td>
                                     <td className="recent-post-table-row-title">
-                                        <Link to={`/post/${post.title}`}>{post.title}</Link>
+                                        <Link to={`/post/${encodeURIComponent(post.title)}`}>{post.title}</Link>
                                     </td>
                                     <td className={`recent-post-table-row-topic ${topicClasses[post.topic] || ''}`}>{post.topic}</td>                                    
                                     <td className={`recent-post-table-row-purpose ${purposeClasses[post.purpose] || ''}`}>{post.purpose}</td>

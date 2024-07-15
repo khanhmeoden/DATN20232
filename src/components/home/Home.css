@@ -79,6 +79,7 @@ a.nav:hover {
     box-sizing: border-box;
     margin-top: 25px;
     margin-left: 10px;
+    overflow: hidden;
 }
 
 

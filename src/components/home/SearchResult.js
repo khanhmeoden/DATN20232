@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import defaultAvatar from '../../asset/unknown-user.jpg';
 import NavBar from "./NavBar";
@@ -93,18 +93,13 @@ const SearchResult = () => {
                                                     <p className="username">{result.username}</p>
                                                 </div>
                                             </td>
-                                            <td className="search-result-table-row-title">{result.title}</td>
+                                            <td className="search-result-table-row-title"><Link to={`/post/${result.title}`}>{result.title}</Link></td>
                                             <td className={`search-result-table-row-topic ${topicClasses[result.topic]}`}>{result.topic}</td>
                                             <td className={`search-result-table-row-purpose ${purposeClasses[result.purpose]}`}>{result.purpose}</td>
                                             <td className="search-result-table-row-likes">{result.likeCount}</td>
                                             <td className="search-result-table-row-unlikes">{result.unlikeCount}</td>
                                             <td className="search-result-table-row-comment">{result.total_comments}</td>
                                             <td className="search-result-table-row-date-posted">{new Date(result.datePosted).toLocaleDateString()}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan="8" className="search-result-table-row snippet">
-                                                {result.snippet_before} {result.snippet_after} 
-                                            </td>
                                         </tr>
                                     </React.Fragment>
                                 ))}

@@ -59,8 +59,8 @@ function App() {
         <Route path='/purpose2' element={<Purpose2 />}></Route>
         <Route path='/purpose3' element={<Purpose3 />}></Route>        
         <Route path='/purpose4' element={<Purpose4 />}></Route>        
-
-        <Route path="/post/:title" component={<PostDetail />} />
+        
+        <Route path="/post/:title" element={<PostDetail />} />
     </Routes>
   );
 }
